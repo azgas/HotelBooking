@@ -15,6 +15,7 @@ namespace HotelBase
                     return new HotelTwo(bookingService, paymentService);
                 default:
                     return null;
+
             }
         }
     }
