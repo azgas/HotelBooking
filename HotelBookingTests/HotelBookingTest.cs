@@ -10,15 +10,18 @@ namespace HotelBookingTests
     public class HotelBookingTest
     {
         private readonly IHotelFactory _factory = MockRepository.GenerateMock<IHotelFactory>();
+        private readonly IPaymentService _paymentService = MockRepository.GenerateMock<IPaymentService>();
+        private readonly IBookingService _bookingService = MockRepository.GenerateMock<IBookingService>();
+
         private HotelManager _manager;
 
         [SetUp]
         public void Setup()
         {
-            _factory.Stub(f => f.ReturnHotel(1)).Return(new HotelOne());
-            _factory.Stub(f => f.ReturnHotel(2)).Return(new HotelTwo());
-            _factory.Stub(f => f.ReturnHotel(3)).Return(null);
-            _manager = new HotelManager(_factory);
+            _factory.Stub(f => f.ReturnHotel(1, _bookingService, _paymentService)).Return(new HotelOne(_bookingService, _paymentService));
+            _factory.Stub(f => f.ReturnHotel(2, _bookingService, _paymentService)).Return(new HotelTwo(_bookingService, _paymentService));
+            _factory.Stub(f => f.ReturnHotel(3, _bookingService, _paymentService)).Return(null);
+            _manager = new HotelManager(_factory, _paymentService, _bookingService);
         }
 
         [Test]

@@ -9,5 +9,9 @@
         public bool PaymentSuccess { get; set; }
         public bool EmailSentSuccess { get; set; }
 
+        public ReservationResult(bool success)
+        {
+            Success = success;
+        }
     }
 }

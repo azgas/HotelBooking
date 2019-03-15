@@ -5,16 +5,29 @@ namespace HotelBase
 {
     public class HotelOne : HotelBaseClass, IHotel
     {
-        
-        public ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
+        public override ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
         {
-            throw new NotImplementedException();
-            
-        }
+            bool priceValidation = CheckPrice(price, date);
+            if (!priceValidation)
+                return new ReservationResult(false) {PriceValidationSuccess = false};
 
-        internal override bool MakePayment(string creditCardNumber)
-        {
-            throw new NotImplementedException();
+            bool roomBooked = BookRoom(date);
+            if (!roomBooked)
+                return new ReservationResult(false)
+                    {PriceValidationSuccess = true, ReservationSuccess = false};
+
+            bool paymentMade = MakePayment(creditCardNumber, price);
+            if (!paymentMade)
+                return new ReservationResult(false)
+                    {PriceValidationSuccess = true, ReservationSuccess = true, PaymentSuccess = false};
+
+            bool emailSent = SendEmail(email);
+
+            return new ReservationResult(true)
+            {
+                PriceValidationSuccess = true, ReservationSuccess = true, PaymentSuccess = true,
+                EmailSentSuccess = emailSent, ReservationNumber = GenerateReservationNumber()
+            };
         }
 
         internal override bool CheckPrice(double price, DateTime date)
@@ -31,6 +44,11 @@ namespace HotelBase
         internal override bool BookRoom(DateTime date)
         {
             throw new NotImplementedException();
+        }
+
+        public HotelOne(IBookingService bookingService, IPaymentService paymentService) : base(bookingService,
+            paymentService)
+        {
         }
     }
 }

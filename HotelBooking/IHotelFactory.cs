@@ -2,6 +2,6 @@
 {
     public interface IHotelFactory
     {
-        IHotel ReturnHotel(int id);
+        IHotel ReturnHotel(int id, IBookingService bookingService, IPaymentService paymentService);
     }
 }

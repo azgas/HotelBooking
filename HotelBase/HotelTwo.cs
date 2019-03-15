@@ -5,13 +5,7 @@ namespace HotelBase
 {
     public class HotelTwo : HotelBaseClass, IHotel 
     {
-        
-        public ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override bool MakePayment(string creditCardNumber)
+        public override ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
         {
             throw new NotImplementedException();
         }
@@ -29,6 +23,10 @@ namespace HotelBase
         internal override bool BookRoom(DateTime date)
         {
             throw new NotImplementedException();
+        }
+
+        public HotelTwo(IBookingService bookingService, IPaymentService paymentService) : base(bookingService, paymentService)
+        {
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace HotelBooking
+﻿namespace HotelBooking
 {
     public interface IHotelReservation
     {
-        ReservationResult MakeReservation(int hotelID, DateTime date, double price, int creditCardNumber, string email);
+        ReservationResult MakeReservation(int hotelID, double price, int creditCardNumber, string email);
     }
 }
