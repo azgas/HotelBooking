@@ -56,6 +56,11 @@ namespace HotelBase
 
         internal override bool BookRoom(DateTime date)
         {
+            if (date < DateTime.Now.AddDays(5))
+            {
+                Console.WriteLine(Messages.DateTooEarly);
+                return false;
+            }
 
             bool roomBooked = BookRoomInExternalService(date);
             if (!roomBooked) return false;

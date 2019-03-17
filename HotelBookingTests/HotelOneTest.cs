@@ -46,9 +46,19 @@ namespace HotelBookingTests
             DateTime date = DateTime.Parse("01.01.2020");
             BookingService.Stub(x => x.Book(date)).Return(true);
             Assert.That(_hotel.BookRoom(date), Is.EqualTo(true));
+
         }
 
         [Test]
+        public void SholdntBookARoomIfDateIsTooEarly()
+        {
+
+            DateTime date2 = DateTime.Now.AddDays(4);
+            BookingService.Stub(x => x.Book(date2)).Return(true);
+            Assert.That(_hotel.BookRoom(date2), Is.EqualTo(false));
+        }
+
+       [Test]
         public void ShouldProcessWholeReservation()
         {
             string email = "test@test.com";
