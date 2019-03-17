@@ -19,7 +19,7 @@ namespace HotelBooking
         }
 
         public ReservationResult MakeReservation(int hotelId, double price, int creditCardNumber,
-            string email)
+            string email, DateTime date)
         {
             try
             {
@@ -30,7 +30,6 @@ namespace HotelBooking
                 Console.WriteLine(e.Message);
                 return new ReservationResult( false);
             }
-            DateTime date = DateTime.Today;
 
             return Hotel.Reserve(date, price, creditCardNumber, email);
 

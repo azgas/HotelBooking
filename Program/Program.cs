@@ -14,7 +14,7 @@ namespace Program
             IBookingService bookingService = new BookingService();
             IHotelReservation manager = new HotelManager(factory, paymentService, bookingService);
 
-            ReservationResult result = manager.MakeReservation(20, 200, 2222, "test@test2.com");
+            ReservationResult result = manager.MakeReservation(2, 200, 2222, "test@test2.com", DateTime.Today);
             Console.WriteLine(FormatReservationResult(result));
             Console.ReadLine();
         }
@@ -35,6 +35,11 @@ namespace Program
             result.Append("Price valid: ");
             result.Append(resResult.PriceValidationSuccess);
             result.AppendLine();
+            if (resResult.ReservationNumber != null)
+            {
+                result.Append("Reservation number: ");
+                result.Append(resResult.ReservationNumber);
+            }
 
             return result.ToString();
         }

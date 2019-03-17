@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace HotelBase
@@ -16,8 +17,9 @@ namespace HotelBase
         {
             Random random = new Random();
             const string chars = "A0123456789";
-            string randomString = Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray().ToString();
+            string randomString = new string( Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
             return prefix + randomString;
+            
         }
     }
 }
