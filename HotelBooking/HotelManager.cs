@@ -25,15 +25,15 @@ namespace HotelBooking
             {
                 FindHotel(hotelId);
             }
-            catch (NullHotelException)
+            catch (NullHotelException e)
             {
+                Console.WriteLine(e.Message);
                 return new ReservationResult( false);
             }
             DateTime date = DateTime.Today;
 
-            Hotel.Reserve(date, price, creditCardNumber, email);
+            return Hotel.Reserve(date, price, creditCardNumber, email);
 
-            return new ReservationResult( false);
         }
 
         internal void FindHotel(int hotelId)

@@ -1,5 +1,4 @@
-﻿using System;
-using HotelBase;
+﻿using HotelBase;
 using HotelBooking;
 using HotelExceptions;
 using NUnit.Framework;

@@ -1,5 +1,4 @@
 ﻿using HotelBase;
-using HotelBooking;
 using NUnit.Framework;
 using Rhino.Mocks;
 

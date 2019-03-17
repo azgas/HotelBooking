@@ -15,7 +15,7 @@ namespace HotelBase
         public static string GenerateRandomString(string prefix)
         {
             Random random = new Random();
-            string chars = "A0123456789";
+            const string chars = "A0123456789";
             string randomString = Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray().ToString();
             return prefix + randomString;
         }

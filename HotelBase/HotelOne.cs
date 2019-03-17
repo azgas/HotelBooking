@@ -5,11 +5,11 @@ namespace HotelBase
 {
     public class HotelOne : HotelBaseClass, IHotel
     {
-        private readonly double _seasonPrice = 250;
-        private readonly double _priceAfterSeason = 200;
-        private readonly string _ID = "01";
+        private const double SeasonPrice = 250;
+        private const double PriceAfterSeason = 200;
+        private const string Id = "01";
 
-        public override ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
+        public virtual ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
         {
             bool priceValidation = CheckPrice(price, date);
             if (!priceValidation)
@@ -38,19 +38,19 @@ namespace HotelBase
         {
             double actualPrice;
             if (date.Month > 5 && date.Month < 9)
-                actualPrice = _seasonPrice;
+                actualPrice = SeasonPrice;
             else
             {
-                actualPrice = _priceAfterSeason;
+                actualPrice = PriceAfterSeason;
             }
 
-            return (Math.Abs(price - actualPrice) < 0.01);
+            return Math.Abs(price - actualPrice) < 0.01;
         }
 
 
         internal override string GenerateReservationNumber()
         {
-            return StringHelper.GenerateRandomString(_ID);
+            return StringHelper.GenerateRandomString(Id);
 
         }
 
@@ -58,13 +58,10 @@ namespace HotelBase
         {
 
             bool roomBooked = BookRoomInExternalService(date);
-            if (roomBooked)
-            {
-                Console.WriteLine(Messages.BookedRoom + _ID);
-                return true;
-            }
+            if (!roomBooked) return false;
+            Console.WriteLine(Messages.BookedRoom + Id);
+            return true;
 
-            return false;
         }
 
         public HotelOne(IBookingService bookingService, IPaymentService paymentService) : base(bookingService,

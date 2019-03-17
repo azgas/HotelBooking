@@ -5,6 +5,5 @@
         public const string PaymentFail = "Couldn't process the payment.";
         public const string InvalidEmail = "Invalid email address.";
         public const string BookedRoom = "Successfully booked a room in hotel: ";
-        public const string DateTooEarly = "Cannot book a room earlier than 5 days from current day.";
     }
 }
