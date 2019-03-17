@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="HotelBookingTest.cs" />
     <Compile Include="HotelOneTest.cs" />
+    <Compile Include="MockedServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HotelBaseClassTest.cs" />
   </ItemGroup>

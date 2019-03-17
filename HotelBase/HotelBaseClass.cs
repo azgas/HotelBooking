@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq.Expressions;
 using HotelBooking;
 
 namespace HotelBase
 {
     public abstract class HotelBaseClass
     {
-        private IBookingService _bookingService;
+        private readonly IBookingService _bookingService;
         private readonly IPaymentService _paymentService;
 
         internal bool MakePayment(int creditCardNumber, double price)
@@ -28,7 +27,11 @@ namespace HotelBase
             
             return success;
         }
-        internal abstract bool CheckPrice(double price, DateTime date);
+
+        internal virtual bool CheckPrice(double price, DateTime date)
+        {
+            return true;
+        }
 
         protected HotelBaseClass(IBookingService bookingService, IPaymentService paymentService)
         {
@@ -45,8 +48,20 @@ namespace HotelBase
             return false;
         }
 
-        public abstract ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email);
-        internal abstract string GenerateReservationNumber();
-        internal abstract bool BookRoom(DateTime date);
+        internal virtual string GenerateReservationNumber()
+        {
+            return StringHelper.GenerateRandomString("0");
+
+        }
+
+        internal virtual bool BookRoom(DateTime date)
+        {
+            return BookRoomInExternalService(date);
+        }
+
+        internal bool BookRoomInExternalService(DateTime date)
+        {
+            return _bookingService.Book(date);
+        }
     }
 }

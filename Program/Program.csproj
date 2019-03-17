@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ECB5C4AD-C234-4F73-B2B2-60D6C1D51583}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>HotelBooking</RootNamespace>
-    <AssemblyName>HotelBooking</AssemblyName>
+    <ProjectGuid>{8DF5AC7F-7BE8-4CF1-818E-DA7404C9C486}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Program</RootNamespace>
+    <AssemblyName>Program</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,9 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,22 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HotelManager.cs" />
-    <Compile Include="IBookingService.cs" />
-    <Compile Include="IHotel.cs" />
-    <Compile Include="IHotelFactory.cs" />
-    <Compile Include="IHotelReservation.cs" />
-    <Compile Include="IPaymentService.cs" />
+    <Compile Include="BookingService.cs" />
+    <Compile Include="PaymentService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReservationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HotelExceptions\HotelExceptions.csproj">
-      <Project>{887530F0-79F0-47E5-9F2B-042F3383BB8E}</Project>
-      <Name>HotelExceptions</Name>
+    <ProjectReference Include="..\HotelBase\HotelBase.csproj">
+      <Project>{e4d075e2-b9b7-47e6-8dcb-67b7bd1a52dc}</Project>
+      <Name>HotelBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HotelBooking\HotelBooking.csproj">
+      <Project>{ecb5c4ad-c234-4f73-b2b2-60d6c1d51583}</Project>
+      <Name>HotelBooking</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
