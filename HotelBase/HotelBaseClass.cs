@@ -6,7 +6,7 @@ namespace HotelBase
 {
     public abstract class HotelBaseClass
     {
-        private IBookingService _bookingService;
+        private readonly IBookingService _bookingService;
         private readonly IPaymentService _paymentService;
 
         internal bool MakePayment(int creditCardNumber, double price)
@@ -48,5 +48,10 @@ namespace HotelBase
         public abstract ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email);
         internal abstract string GenerateReservationNumber();
         internal abstract bool BookRoom(DateTime date);
+
+        internal bool BookRoomInExternalService(DateTime date)
+        {
+            return _bookingService.Book(date);
+        }
     }
 }

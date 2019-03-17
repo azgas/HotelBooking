@@ -18,30 +18,30 @@ namespace HotelBooking
 
         }
 
-        public ReservationResult MakeReservation(int hotelID, double price, int creditCardNumber,
+        public ReservationResult MakeReservation(int hotelId, double price, int creditCardNumber,
             string email)
         {
             try
             {
-                FindHotel(hotelID);
+                FindHotel(hotelId);
             }
             catch (NullHotelException)
             {
-                return new ReservationResult {Success = false};
+                return new ReservationResult( false);
             }
             DateTime date = DateTime.Today;
 
             Hotel.Reserve(date, price, creditCardNumber, email);
 
-            return new ReservationResult{Success = true};
+            return new ReservationResult( false);
         }
 
-        internal void FindHotel(int hotelID)
+        internal void FindHotel(int hotelId)
         {
-            Hotel = _factory.ReturnHotel(hotelID, _bookingService, _paymentService);
+            Hotel = _factory.ReturnHotel(hotelId, _bookingService, _paymentService);
             if (Hotel == null)
             {
-                throw new NullHotelException($"Couldn't find hotel with specified ID: {hotelID}");
+                throw new NullHotelException($"Couldn't find hotel with specified ID: {hotelId}");
             }
         }
     }
