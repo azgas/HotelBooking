@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HotelBookingTest.cs" />
-    <Compile Include="HotelOneTest.cs" />
+    <Compile Include="HotelExampleEmailCanFailTest.cs" />
     <Compile Include="MockedServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HotelBaseClassTest.cs" />
@@ -68,10 +68,6 @@
     <ProjectReference Include="..\HotelBooking\HotelBooking.csproj">
       <Project>{ecb5c4ad-c234-4f73-b2b2-60d6c1d51583}</Project>
       <Name>HotelBooking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HotelExceptions\HotelExceptions.csproj">
-      <Project>{887530F0-79F0-47E5-9F2B-042F3383BB8E}</Project>
-      <Name>HotelExceptions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

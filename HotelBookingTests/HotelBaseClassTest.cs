@@ -12,7 +12,7 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            _hotel = MockRepository.GeneratePartialMock<HotelOne>(BookingService, PaymentService);
+            _hotel = MockRepository.GeneratePartialMock<HotelExampleEmailCanFail>(BookingService, PaymentService, Logger);
 
             }
         [Test]

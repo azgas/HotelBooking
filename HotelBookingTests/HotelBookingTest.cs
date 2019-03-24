@@ -1,6 +1,5 @@
 ﻿using HotelBase;
 using HotelBooking;
-using HotelExceptions;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -14,25 +13,25 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService)).Return(new HotelOne(BookingService, PaymentService));
-            Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService)).Return(new HotelTwo(BookingService, PaymentService));
-            Factory.Stub(f => f.ReturnHotel(3, BookingService, PaymentService)).Return(null);
-            _manager = new HotelManager(Factory, PaymentService, BookingService);
+            Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService, Logger)).Return(new HotelExampleEmailCanFail(BookingService, PaymentService, Logger));
+            Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService, Logger)).Return(new HotelExample(BookingService, PaymentService, Logger));
+            Factory.Stub(f => f.ReturnHotel(3, BookingService, PaymentService, Logger)).Return(null);
+            _manager = new HotelManager(Factory, PaymentService, BookingService, Logger);
         }
 
         [Test]
-        public void ShouldThrowExceptionWhenHotelIdIsNotAvailable()
+        public void ShouldReturnFalseWhenHotelIdIsNotAvailable()
         {
             int id = 3;
-            var ex = Assert.Throws<NullHotelException>(() => _manager.FindHotel(id));
-            Assert.That(ex.Message, Is.EqualTo($"Couldn't find hotel with specified ID: {id}"));
+            bool hotelFound = _manager.FindHotel(id);
+            Assert.False(hotelFound);
         }
 
         [Test]
         public void ShouldReturnHotelWithCorrectId()
         {
             _manager.FindHotel(2);
-            Assert.IsInstanceOf(typeof(HotelTwo), _manager.Hotel);
+            Assert.IsInstanceOf(typeof(HotelExample), _manager.Hotel);
         }
 
     }

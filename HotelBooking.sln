@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingTests", "HotelB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBase", "HotelBase\HotelBase.csproj", "{E4D075E2-B9B7-47E6-8DCB-67B7BD1A52DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelExceptions", "HotelExceptions\HotelExceptions.csproj", "{887530F0-79F0-47E5-9F2B-042F3383BB8E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{8DF5AC7F-7BE8-4CF1-818E-DA7404C9C486}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{E4D075E2-B9B7-47E6-8DCB-67B7BD1A52DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4D075E2-B9B7-47E6-8DCB-67B7BD1A52DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4D075E2-B9B7-47E6-8DCB-67B7BD1A52DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{887530F0-79F0-47E5-9F2B-042F3383BB8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{887530F0-79F0-47E5-9F2B-042F3383BB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{887530F0-79F0-47E5-9F2B-042F3383BB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{887530F0-79F0-47E5-9F2B-042F3383BB8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8DF5AC7F-7BE8-4CF1-818E-DA7404C9C486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8DF5AC7F-7BE8-4CF1-818E-DA7404C9C486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DF5AC7F-7BE8-4CF1-818E-DA7404C9C486}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -7,25 +7,25 @@ namespace HotelBase
     {
         private readonly IBookingService _bookingService;
         private readonly IPaymentService _paymentService;
+        internal readonly ILogger Logger;
 
         internal bool MakePayment(int creditCardNumber, double price)
         {
-            bool success;
+            bool successfulPayment;
             try
             {
-                success = _paymentService.Pay(creditCardNumber, price);
+                successfulPayment = _paymentService.Pay(creditCardNumber, price);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return false;
+                Logger.Write(e.Message);
+                throw;
             }
 
-            if (!success)
-                Console.WriteLine(Messages.PaymentFail);
-
+            if (!successfulPayment)
+                Logger.Write(Messages.PaymentFail);
             
-            return success;
+            return successfulPayment;
         }
 
         internal virtual bool CheckPrice(double price, DateTime date)
@@ -33,18 +33,19 @@ namespace HotelBase
             return true;
         }
 
-        protected HotelBaseClass(IBookingService bookingService, IPaymentService paymentService)
+        protected HotelBaseClass(IBookingService bookingService, IPaymentService paymentService, ILogger logger)
         {
             _bookingService = bookingService;
             _paymentService = paymentService;
+            Logger = logger;
         }
 
         internal bool SendEmail(string email)
         {
             bool validEmail = StringHelper.IsValidEmail(email);
             if(validEmail)
-            return true;
-            Console.WriteLine(Messages.InvalidEmail);
+                return true;
+            Logger.Write(Messages.InvalidEmail);
             return false;
         }
 

@@ -3,7 +3,7 @@ using HotelBooking;
 
 namespace HotelBase
 {
-    public class HotelOne : HotelBaseClass, IHotel
+    public class HotelExampleEmailCanFail : HotelBaseClass, IHotel
     {
         private const double SeasonPrice = 250;
         private const double PriceAfterSeason = 200;
@@ -58,19 +58,19 @@ namespace HotelBase
         {
             if (date < DateTime.Now.AddDays(5))
             {
-                Console.WriteLine(Messages.DateTooEarly);
+                Logger.Write(Messages.DateTooEarly);
                 return false;
             }
 
             bool roomBooked = BookRoomInExternalService(date);
             if (!roomBooked) return false;
-            Console.WriteLine(Messages.BookedRoom + Id);
+            Logger.Write(Messages.BookedRoom + Id);
             return true;
 
         }
 
-        public HotelOne(IBookingService bookingService, IPaymentService paymentService) : base(bookingService,
-            paymentService)
+        public HotelExampleEmailCanFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(bookingService,
+            paymentService, logger)
         {
         }
     }

@@ -3,7 +3,7 @@ using HotelBooking;
 
 namespace HotelBase
 {
-    public class HotelTwo : HotelBaseClass, IHotel 
+    public class HotelExample : HotelBaseClass, IHotel 
     {
         public virtual ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
         {
@@ -43,7 +43,7 @@ namespace HotelBase
 
 
 
-        public HotelTwo(IBookingService bookingService, IPaymentService paymentService) : base(bookingService, paymentService)
+        public HotelExample(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(bookingService, paymentService, logger)
         {
         }
     }

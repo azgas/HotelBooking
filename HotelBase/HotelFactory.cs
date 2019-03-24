@@ -5,14 +5,14 @@ namespace HotelBase
     public class HotelFactory : IHotelFactory
     {
 
-        public IHotel ReturnHotel(int id, IBookingService bookingService, IPaymentService paymentService)
+        public IHotel ReturnHotel(int id, IBookingService bookingService, IPaymentService paymentService, ILogger logger)
         {
             switch (id)
             {
                 case 1:
-                    return new HotelOne(bookingService, paymentService);
+                    return new HotelExampleEmailCanFail(bookingService, paymentService, logger);
                 case 2:
-                    return new HotelTwo(bookingService, paymentService);
+                    return new HotelExample(bookingService, paymentService, logger);
                 default:
                     return null;
             }
