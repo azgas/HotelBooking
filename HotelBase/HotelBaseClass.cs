@@ -24,7 +24,7 @@ namespace HotelBase
 
             if (!successfulPayment)
                 Logger.Write(Messages.PaymentFail);
-            
+
             return successfulPayment;
         }
 
@@ -43,7 +43,7 @@ namespace HotelBase
         internal bool SendEmail(string email)
         {
             bool validEmail = StringHelper.IsValidEmail(email);
-            if(validEmail)
+            if (validEmail)
                 return true;
             Logger.Write(Messages.InvalidEmail);
             return false;
@@ -52,7 +52,6 @@ namespace HotelBase
         internal virtual string GenerateReservationNumber()
         {
             return StringHelper.GenerateRandomString("0");
-
         }
 
         internal virtual bool BookRoom(DateTime date)

@@ -4,8 +4,8 @@ namespace HotelBase
 {
     public class HotelFactory : IHotelFactory
     {
-
-        public IHotel ReturnHotel(int id, IBookingService bookingService, IPaymentService paymentService, ILogger logger)
+        public IHotel ReturnHotel(int id, IBookingService bookingService, IPaymentService paymentService,
+            ILogger logger)
         {
             switch (id)
             {

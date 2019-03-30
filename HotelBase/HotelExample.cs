@@ -3,47 +3,36 @@ using HotelBooking;
 
 namespace HotelBase
 {
-    public class HotelExample : HotelBaseClass, IHotel 
+    public class HotelExample : HotelBaseClass, IHotel
     {
         public virtual ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
         {
             bool priceValidation = CheckPrice(price, date);
             if (!priceValidation)
-                return new ReservationResult(false) { PriceValidationSuccess = false };
+                return new ReservationResult(false);
 
 
             bool paymentMade = MakePayment(creditCardNumber, price);
             if (!paymentMade)
-                return new ReservationResult(false)
-                    { PriceValidationSuccess = true, PaymentSuccess = false };
+                return new ReservationResult(false, priceValidationSuccess: priceValidation);
 
             bool roomBooked = BookRoom(date);
             if (!roomBooked)
-                return new ReservationResult(false)
-                    { PriceValidationSuccess = true, PaymentSuccess = true, ReservationSuccess = false };
-
+                return new ReservationResult(false, priceValidationSuccess: priceValidation,
+                    paymentSuccess: paymentMade);
 
             bool emailSent = SendEmail(email);
-            if(!emailSent)
-                return new ReservationResult(false)
-                {
-                    PriceValidationSuccess = true, PaymentSuccess = true, ReservationSuccess = true, EmailSentSuccess = false
-                };
+            if (!emailSent)
+                return new ReservationResult(false, priceValidationSuccess: priceValidation,
+                    paymentSuccess: paymentMade, reservationSuccess: roomBooked);
 
-            return new ReservationResult(true)
-            {
-                PriceValidationSuccess = true,
-                ReservationSuccess = true,
-                PaymentSuccess = true,
-                EmailSentSuccess = true,
-                ReservationNumber = GenerateReservationNumber()
-            };
+            return new ReservationResult(true, priceValidationSuccess: priceValidation,
+                paymentSuccess: paymentMade, reservationSuccess: roomBooked, emailSentSuccess: emailSent,
+                reservationNumber: GenerateReservationNumber());
         }
 
-
-
-
-        public HotelExample(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(bookingService, paymentService, logger)
+        public HotelExample(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(
+            bookingService, paymentService, logger)
         {
         }
     }

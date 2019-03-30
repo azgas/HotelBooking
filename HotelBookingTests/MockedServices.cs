@@ -9,6 +9,5 @@ namespace HotelBookingTests
         protected readonly IPaymentService PaymentService = MockRepository.GenerateMock<IPaymentService>();
         protected readonly IBookingService BookingService = MockRepository.GenerateMock<IBookingService>();
         protected readonly ILogger Logger = MockRepository.GenerateMock<ILogger>();
-
     }
 }

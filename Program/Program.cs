@@ -13,7 +13,7 @@ namespace Program
             IPaymentService paymentService = new PaymentService();
             IBookingService bookingService = new BookingService();
             ILogger logger = new ConsoleLogger();
-            IHotelReservation manager = new HotelManager(factory, paymentService, bookingService, logger);
+            HotelManager manager = new HotelManager(factory, paymentService, bookingService, logger);
 
             ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
             logger.Write(FormatReservationResult(result));

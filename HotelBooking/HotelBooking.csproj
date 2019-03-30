@@ -49,7 +49,6 @@
     <Compile Include="IBookingService.cs" />
     <Compile Include="IHotel.cs" />
     <Compile Include="IHotelFactory.cs" />
-    <Compile Include="IHotelReservation.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IPaymentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

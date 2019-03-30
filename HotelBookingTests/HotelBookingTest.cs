@@ -1,4 +1,5 @@
-﻿using HotelBase;
+﻿using System;
+using HotelBase;
 using HotelBooking;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -20,18 +21,19 @@ namespace HotelBookingTests
         }
 
         [Test]
-        public void ShouldReturnFalseWhenHotelIdIsNotAvailable()
+        public void ShouldReturnFalseAndCallLoggerWhenHotelIdIsNotAvailable()
         {
             int id = 3;
-            bool hotelFound = _manager.FindHotel(id);
-            Assert.False(hotelFound);
+            ReservationResult result = _manager.MakeReservation(id, 3.0, 3333, "test@gmail.com", DateTime.Now);
+            Assert.False(result.Success);
+            Logger.AssertWasCalled(l => l.Write($"Couldn't find hotel with ID: {id}"));
         }
 
         [Test]
-        public void ShouldReturnHotelWithCorrectId()
+        public void ShouldReturnReservationResultForHotelWithCorrectId()
         {
-            _manager.FindHotel(2);
-            Assert.IsInstanceOf(typeof(HotelExample), _manager.Hotel);
+            var result = _manager.MakeReservation(1, 3.0, 3333, "test@gmail.com", DateTime.Now);
+            Assert.IsInstanceOf(typeof(ReservationResult), result);
         }
 
     }

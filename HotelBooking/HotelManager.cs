@@ -2,15 +2,17 @@
 
 namespace HotelBooking
 {
-    public class HotelManager : IHotelReservation
+    public class HotelManager
     {
         private readonly IHotelFactory _factory;
         private readonly IPaymentService _paymentService;
         private readonly IBookingService _bookingService;
         private readonly ILogger _logger;
 
-        public IHotel Hotel { get; set; }
-        public HotelManager(IHotelFactory factory, IPaymentService paymentService, IBookingService bookingService, ILogger logger)
+        private IHotel _hotel;
+
+        public HotelManager(IHotelFactory factory, IPaymentService paymentService, IBookingService bookingService,
+            ILogger logger)
         {
             _factory = factory;
             _paymentService = paymentService;
@@ -21,23 +23,21 @@ namespace HotelBooking
         public ReservationResult MakeReservation(int hotelId, double price, int creditCardNumber,
             string email, DateTime date)
         {
+            bool hotelFound = FindHotel(hotelId);
 
-             bool hotelFound =  FindHotel(hotelId);
-
-            if(!hotelFound)
+            if (!hotelFound)
             {
                 _logger.Write($"Couldn't find hotel with ID: {hotelId}");
-                return new ReservationResult( false);
+                return new ReservationResult(false);
             }
 
-            return Hotel.Reserve(date, price, creditCardNumber, email);
-
+            return _hotel.Reserve(date, price, creditCardNumber, email);
         }
 
-        internal bool FindHotel(int hotelId)
+        private bool FindHotel(int hotelId)
         {
-            Hotel = _factory.ReturnHotel(hotelId, _bookingService, _paymentService, _logger);
-            return Hotel != null;
+            _hotel = _factory.ReturnHotel(hotelId, _bookingService, _paymentService, _logger);
+            return _hotel != null;
         }
     }
 }

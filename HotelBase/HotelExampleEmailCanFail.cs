@@ -13,25 +13,22 @@ namespace HotelBase
         {
             bool priceValidation = CheckPrice(price, date);
             if (!priceValidation)
-                return new ReservationResult(false) {PriceValidationSuccess = false};
+                return new ReservationResult(false);
 
             bool roomBooked = BookRoom(date);
             if (!roomBooked)
-                return new ReservationResult(false)
-                    {PriceValidationSuccess = true, ReservationSuccess = false};
+                return new ReservationResult(false, priceValidationSuccess: priceValidation);
 
             bool paymentMade = MakePayment(creditCardNumber, price);
             if (!paymentMade)
-                return new ReservationResult(false)
-                    {PriceValidationSuccess = true, ReservationSuccess = true, PaymentSuccess = false};
+                return new ReservationResult(false, priceValidationSuccess: priceValidation,
+                    reservationSuccess: roomBooked);
 
             bool emailSent = SendEmail(email);
 
-            return new ReservationResult(true)
-            {
-                PriceValidationSuccess = true, ReservationSuccess = true, PaymentSuccess = true,
-                EmailSentSuccess = emailSent, ReservationNumber = GenerateReservationNumber()
-            };
+            return new ReservationResult(true, priceValidationSuccess: priceValidation,
+                paymentSuccess: paymentMade, reservationSuccess: roomBooked, emailSentSuccess: emailSent,
+                reservationNumber: GenerateReservationNumber());
         }
 
         internal override bool CheckPrice(double price, DateTime date)
@@ -47,11 +44,9 @@ namespace HotelBase
             return Math.Abs(price - actualPrice) < 0.01;
         }
 
-
         internal override string GenerateReservationNumber()
         {
             return StringHelper.GenerateRandomString(Id);
-
         }
 
         internal override bool BookRoom(DateTime date)
@@ -66,11 +61,11 @@ namespace HotelBase
             if (!roomBooked) return false;
             Logger.Write(Messages.BookedRoom + Id);
             return true;
-
         }
 
-        public HotelExampleEmailCanFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(bookingService,
-            paymentService, logger)
+        public HotelExampleEmailCanFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger)
+            : base(bookingService,
+                paymentService, logger)
         {
         }
     }
