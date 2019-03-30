@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HotelBase;
 using HotelBooking;
 using NUnit.Framework;
@@ -17,6 +18,8 @@ namespace HotelBookingTests
             Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService, Logger)).Return(new HotelExampleEmailCanFail(BookingService, PaymentService, Logger));
             Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService, Logger)).Return(new HotelExample(BookingService, PaymentService, Logger));
             Factory.Stub(f => f.ReturnHotel(3, BookingService, PaymentService, Logger)).Return(null);
+            Factory.Stub(f => f.PresentAvailableIds()).Return(new List<int> {1, 2});
+
             _manager = new HotelManager(Factory, PaymentService, BookingService, Logger);
         }
 
@@ -32,9 +35,17 @@ namespace HotelBookingTests
         [Test]
         public void ShouldReturnReservationResultForHotelWithCorrectId()
         {
-            var result = _manager.MakeReservation(1, 3.0, 3333, "test@gmail.com", DateTime.Now);
+            int id = 1;
+            var result = _manager.MakeReservation(id, 3.0, 3333, "test@gmail.com", DateTime.Now);
             Assert.IsInstanceOf(typeof(ReservationResult), result);
+            Logger.AssertWasNotCalled(l => l.Write($"Couldn't find hotel with ID: {id}"));
         }
 
+        [Test]
+        public void ShouldReturnAvailableHotelIds()
+        {
+            List<int> listHotels = _manager.PresentAvailableHotels();
+            Assert.AreEqual(listHotels, new List<int> {1, 2});
+        }
     }
 }

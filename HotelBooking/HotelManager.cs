@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HotelBooking
 {
@@ -32,6 +33,11 @@ namespace HotelBooking
             }
 
             return _hotel.Reserve(date, price, creditCardNumber, email);
+        }
+
+        public List<int> PresentAvailableHotels()
+        {
+            return _factory.PresentAvailableIds();
         }
 
         private bool FindHotel(int hotelId)

@@ -7,13 +7,8 @@ namespace Program
     {
         public void Write(string message)
         {
-            if(message!= null)
+            if (message != null)
                 Console.WriteLine(message);
-        }
-
-        public void WaitForUserInput()
-        {
-            Console.ReadLine();
         }
     }
 }

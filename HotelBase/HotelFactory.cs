@@ -1,4 +1,5 @@
-﻿using HotelBooking;
+﻿using System.Collections.Generic;
+using HotelBooking;
 
 namespace HotelBase
 {
@@ -16,6 +17,11 @@ namespace HotelBase
                 default:
                     return null;
             }
+        }
+
+        public List<int> PresentAvailableIds()
+        {
+            return new List<int> {1,2};
         }
     }
 }

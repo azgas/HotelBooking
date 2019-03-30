@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using HotelBase;
 using HotelBooking;
@@ -7,17 +8,46 @@ namespace Program
 {
     class Program
     {
+        private static HotelManager _manager;
+        private static ILogger _logger;
+
         static void Main(string[] args)
+        {
+            SetupObjects();
+            bool correctIdFormat = Int32.TryParse(GetUserChoice(), out int id);
+            if (correctIdFormat)
+            {
+                MakeReservation(id);
+                return;
+            }
+
+            Console.WriteLine("ID must be a number.");
+            Console.ReadKey();
+        }
+
+        private static void MakeReservation(int id)
+        {
+            ReservationResult result = _manager.MakeReservation(id, 200, 2222, "test@test2.com", DateTime.Today);
+            Console.WriteLine(FormatReservationResult(result));
+            Console.ReadKey();
+        }
+
+        private static void SetupObjects()
         {
             IHotelFactory factory = new HotelFactory();
             IPaymentService paymentService = new PaymentService();
             IBookingService bookingService = new BookingService();
-            ILogger logger = new ConsoleLogger();
-            HotelManager manager = new HotelManager(factory, paymentService, bookingService, logger);
+            _logger = new ConsoleLogger();
+            _manager = new HotelManager(factory, paymentService, bookingService, _logger);
+        }
 
-            ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
-            logger.Write(FormatReservationResult(result));
-            logger.WaitForUserInput();
+        private static string GetUserChoice()
+        {
+            List<int> availableIds = _manager.PresentAvailableHotels();
+            List<string> idsStringList = availableIds.ConvertAll(x => x.ToString());
+            string idsString = string.Join(", ", idsStringList.ToArray());
+            Console.WriteLine("Please write hotel ID, available hotels in base: " + idsString);
+            return Console.ReadLine();
         }
 
         private static string FormatReservationResult(ReservationResult resResult)
