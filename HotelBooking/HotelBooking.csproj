@@ -49,19 +49,13 @@
     <Compile Include="IBookingService.cs" />
     <Compile Include="IHotel.cs" />
     <Compile Include="IHotelFactory.cs" />
-    <Compile Include="IHotelReservation.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="IPaymentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HotelExceptions\HotelExceptions.csproj">
-      <Project>{887530F0-79F0-47E5-9F2B-042F3383BB8E}</Project>
-      <Name>HotelExceptions</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

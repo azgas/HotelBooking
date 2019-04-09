@@ -42,8 +42,8 @@
   <ItemGroup>
     <Compile Include="HotelBaseClass.cs" />
     <Compile Include="HotelFactory.cs" />
-    <Compile Include="HotelOne.cs" />
-    <Compile Include="HotelTwo.cs" />
+    <Compile Include="HotelExampleEmailCanFail.cs" />
+    <Compile Include="HotelExample.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringHelper.cs" />

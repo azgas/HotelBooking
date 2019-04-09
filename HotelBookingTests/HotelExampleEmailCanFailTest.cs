@@ -7,14 +7,14 @@ using Rhino.Mocks;
 namespace HotelBookingTests
 {
     [TestFixture]
-    public class HotelOneTest : MockedServices
+    public class HotelExampleEmailCanFailTest : MockedServices
     {
-        private HotelOne _hotel; 
+        private HotelExampleEmailCanFail _hotel; 
 
         [SetUp]
         public void Setup()
         {
-            _hotel = new HotelOne(BookingService, PaymentService);
+            _hotel = new HotelExampleEmailCanFail(BookingService, PaymentService, Logger);
         }
 
         [Test]

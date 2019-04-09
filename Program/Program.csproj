@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookingService.cs" />
+    <Compile Include="ConsoleLogger.cs" />
     <Compile Include="PaymentService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

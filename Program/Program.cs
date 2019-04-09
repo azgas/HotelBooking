@@ -12,11 +12,19 @@ namespace Program
             IHotelFactory factory = new HotelFactory();
             IPaymentService paymentService = new PaymentService();
             IBookingService bookingService = new BookingService();
-            IHotelReservation manager = new HotelManager(factory, paymentService, bookingService);
+            ILogger logger = new ConsoleLogger();
+            HotelManager manager = new HotelManager(factory, paymentService, bookingService, logger);
+            try
+            {
+                ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
+                logger.Write(FormatReservationResult(result));
+            }
+            catch (Exception e)
+            {
+                logger.Write(e.Message);
+            }
 
-            ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
-            Console.WriteLine(FormatReservationResult(result));
-            Console.ReadLine();
+            logger.WaitForUserInput();
         }
 
         private static string FormatReservationResult(ReservationResult resResult)

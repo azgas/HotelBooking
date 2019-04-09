@@ -1,47 +1,43 @@
 ﻿using System;
-using HotelExceptions;
 
 namespace HotelBooking
 {
-    public class HotelManager : IHotelReservation
+    public class HotelManager
     {
         private readonly IHotelFactory _factory;
         private readonly IPaymentService _paymentService;
         private readonly IBookingService _bookingService;
+        private readonly ILogger _logger;
 
-        public IHotel Hotel { get; set; }
-        public HotelManager(IHotelFactory factory, IPaymentService paymentService, IBookingService bookingService)
+        private IHotel _hotel;
+
+        public HotelManager(IHotelFactory factory, IPaymentService paymentService, IBookingService bookingService,
+            ILogger logger)
         {
             _factory = factory;
             _paymentService = paymentService;
             _bookingService = bookingService;
-
+            _logger = logger;
         }
 
         public ReservationResult MakeReservation(int hotelId, double price, int creditCardNumber,
             string email, DateTime date)
         {
-            try
+            bool hotelFound = HotelExists(hotelId);
+
+            if (!hotelFound)
             {
-                FindHotel(hotelId);
-            }
-            catch (NullHotelException e)
-            {
-                Console.WriteLine(e.Message);
-                return new ReservationResult( false);
+                _logger.Write($"Couldn't find hotel with ID: {hotelId}");
+                return new ReservationResult(false);
             }
 
-            return Hotel.Reserve(date, price, creditCardNumber, email);
-
+            return _hotel.Reserve(date, price, creditCardNumber, email);
         }
 
-        internal void FindHotel(int hotelId)
+        private bool HotelExists(int hotelId)
         {
-            Hotel = _factory.ReturnHotel(hotelId, _bookingService, _paymentService);
-            if (Hotel == null)
-            {
-                throw new NullHotelException($"Couldn't find hotel with specified ID: {hotelId}");
-            }
+            _hotel = _factory.ReturnHotel(hotelId, _bookingService, _paymentService, _logger);
+            return _hotel != null;
         }
     }
 }
