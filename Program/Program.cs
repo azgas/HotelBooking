@@ -14,9 +14,16 @@ namespace Program
             IBookingService bookingService = new BookingService();
             ILogger logger = new ConsoleLogger();
             HotelManager manager = new HotelManager(factory, paymentService, bookingService, logger);
+            try
+            {
+                ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
+                logger.Write(FormatReservationResult(result));
+            }
+            catch (Exception e)
+            {
+                logger.Write(e.Message);
+            }
 
-            ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
-            logger.Write(FormatReservationResult(result));
             logger.WaitForUserInput();
         }
 
