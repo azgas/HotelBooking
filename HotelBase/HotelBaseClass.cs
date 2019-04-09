@@ -11,16 +11,7 @@ namespace HotelBase
 
         internal bool MakePayment(int creditCardNumber, double price)
         {
-            bool successfulPayment;
-            try
-            {
-                successfulPayment = _paymentService.Pay(creditCardNumber, price);
-            }
-            catch (Exception e)
-            {
-                Logger.Write(e.Message);
-                throw;
-            }
+            var successfulPayment = _paymentService.Pay(creditCardNumber, price);
 
             if (!successfulPayment)
                 Logger.Write(Messages.PaymentFail);

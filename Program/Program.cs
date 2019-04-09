@@ -27,9 +27,17 @@ namespace Program
 
         private static void MakeReservation(int id)
         {
+          try
+          {
             ReservationResult result = _manager.MakeReservation(id, 200, 2222, "test@test2.com", DateTime.Today);
             Console.WriteLine(FormatReservationResult(result));
-            Console.ReadKey();
+          }
+          catch (Exception e)
+          {
+            Console.WriteLine(e.Message);
+          }
+          
+          Console.ReadKey();
         }
 
         private static void SetupObjects()
