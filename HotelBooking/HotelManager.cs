@@ -23,7 +23,7 @@ namespace HotelBooking
         public ReservationResult MakeReservation(int hotelId, double price, int creditCardNumber,
             string email, DateTime date)
         {
-            bool hotelFound = FindHotel(hotelId);
+            bool hotelFound = HotelExists(hotelId);
 
             if (!hotelFound)
             {
@@ -34,7 +34,7 @@ namespace HotelBooking
             return _hotel.Reserve(date, price, creditCardNumber, email);
         }
 
-        private bool FindHotel(int hotelId)
+        private bool HotelExists(int hotelId)
         {
             _hotel = _factory.ReturnHotel(hotelId, _bookingService, _paymentService, _logger);
             return _hotel != null;
