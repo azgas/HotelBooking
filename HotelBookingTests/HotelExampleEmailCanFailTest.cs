@@ -50,7 +50,7 @@ namespace HotelBookingTests
         }
 
         [Test]
-        public void SholdntBookARoomIfDateIsTooEarly()
+        public void ShouldNotBookARoomIfDateIsTooEarly()
         {
 
             DateTime date2 = DateTime.Now.AddDays(4);
