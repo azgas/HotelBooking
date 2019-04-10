@@ -37,7 +37,7 @@ namespace HotelBooking
 
         public List<int> PresentAvailableHotels()
         {
-            return _factory.PresentAvailableIds();
+            return _factory.GetHotelIds();
         }
 
         private bool HotelExists(int hotelId)

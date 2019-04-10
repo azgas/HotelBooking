@@ -7,14 +7,15 @@ namespace HotelBookingTests
     [TestFixture]
     public class HotelBaseClassTest : MockedServices
     {
-        
-        private HotelBaseClass _hotel ;
+        private HotelBaseClass _hotel;
+
         [SetUp]
         public void Setup()
         {
-            _hotel = MockRepository.GeneratePartialMock<HotelExampleEmailCanFail>(BookingService, PaymentService, Logger);
+            _hotel = MockRepository.GeneratePartialMock<HotelExampleEmailCanFail>(BookingService, PaymentService,
+                Logger);
+        }
 
-            }
         [Test]
         public void ShouldValidateEmail()
         {
@@ -30,8 +31,6 @@ namespace HotelBookingTests
             Assert.That(_hotel.MakePayment(245, 0.99), Is.EqualTo(false));
             Assert.That(_hotel.MakePayment(250, 200), Is.EqualTo(true));
             Assert.That(_hotel.MakePayment(250, 00), Is.EqualTo(false));
-
         }
-
     }
 }

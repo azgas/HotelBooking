@@ -6,6 +6,6 @@ namespace HotelBooking
     {
         IHotel ReturnHotel(int id, IBookingService bookingService, IPaymentService paymentService, ILogger logger);
 
-        List<int> PresentAvailableIds();
+        List<int> GetHotelIds();
     }
 }

@@ -18,7 +18,7 @@ namespace HotelBookingTests
             Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService, Logger)).Return(new HotelExampleEmailCanFail(BookingService, PaymentService, Logger));
             Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService, Logger)).Return(new HotelExample(BookingService, PaymentService, Logger));
             Factory.Stub(f => f.ReturnHotel(3, BookingService, PaymentService, Logger)).Return(null);
-            Factory.Stub(f => f.PresentAvailableIds()).Return(new List<int> {1, 2});
+            Factory.Stub(f => f.GetHotelIds()).Return(new List<int> {1, 2});
 
             _manager = new HotelManager(Factory, PaymentService, BookingService, Logger);
         }
@@ -45,7 +45,7 @@ namespace HotelBookingTests
         public void ShouldReturnAvailableHotelIds()
         {
             List<int> listHotels = _manager.PresentAvailableHotels();
-            Assert.AreEqual(listHotels, new List<int> {1, 2});
+            Assert.That(listHotels, Is.EquivalentTo(new List<int> {1, 2}));
         }
     }
 }
