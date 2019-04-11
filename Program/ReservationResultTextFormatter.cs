@@ -3,7 +3,7 @@ using HotelBooking;
 
 namespace Program
 {
-    public static class StringFormatting
+    public static class ReservationResultTextFormatter
     {
         public static string FormatReservationResult(ReservationResult resResult)
         {

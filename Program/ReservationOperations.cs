@@ -31,7 +31,7 @@ namespace Program
             try
             {
                 ReservationResult result = _manager.MakeReservation(id, 200, 2222, "test@test2.com", DateTime.Today);
-                return StringFormatting.FormatReservationResult(result);
+                return ReservationResultTextFormatter.FormatReservationResult(result);
             }
             catch (Exception e)
             {
