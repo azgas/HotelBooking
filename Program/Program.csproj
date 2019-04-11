@@ -48,6 +48,8 @@
     <Compile Include="PaymentService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationOperations.cs" />
+    <Compile Include="ReservationResultTextFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

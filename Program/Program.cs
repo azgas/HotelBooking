@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Text;
-using HotelBase;
-using HotelBooking;
 
 namespace Program
 {
@@ -9,50 +6,22 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            IHotelFactory factory = new HotelFactory();
-            IPaymentService paymentService = new PaymentService();
-            IBookingService bookingService = new BookingService();
-            ILogger logger = new ConsoleLogger();
-            HotelManager manager = new HotelManager(factory, paymentService, bookingService, logger);
-            try
-            {
-                ReservationResult result = manager.MakeReservation(1, 200, 2222, "test@test2.com", DateTime.Today);
-                logger.Write(FormatReservationResult(result));
-            }
-            catch (Exception e)
-            {
-                logger.Write(e.Message);
-            }
+            ReservationOperations reservation = new ReservationOperations();
 
-            logger.WaitForUserInput();
-        }
+            string idsString = reservation.GetAvailableHotelIds();
+            Console.WriteLine("Please write hotel ID, available hotels in base: " + idsString);
+            bool correctIdFormat = Int32.TryParse(Console.ReadLine(), out int id);
 
-        private static string FormatReservationResult(ReservationResult resResult)
-        {
-            StringBuilder result = new StringBuilder();
-            result.AppendLine();
-            result.Append("Process result: ");
-            result.Append(resResult.Success);
-            result.AppendLine();
-            result.Append("Payment made: ");
-            result.Append(resResult.PaymentSuccess);
-            result.AppendLine();
-            result.Append("Email sent: ");
-            result.Append(resResult.EmailSentSuccess);
-            result.AppendLine();
-            result.Append("Price valid: ");
-            result.Append(resResult.PriceValidationSuccess);
-            result.AppendLine();
-            result.Append("Room booked: ");
-            result.Append(resResult.ReservationSuccess);
-            result.AppendLine();
-            if (resResult.ReservationNumber != null)
+            if (correctIdFormat)
             {
-                result.Append("Reservation number: ");
-                result.Append(resResult.ReservationNumber);
+                string result = reservation.MakeReservation(id);
+                Console.WriteLine(result);
+                Console.ReadKey();
+                return;
             }
 
-            return result.ToString();
+            Console.WriteLine("ID must be a number.");
+            Console.ReadKey();
         }
     }
 }
