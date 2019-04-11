@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HotelBookingTest.cs" />
+    <Compile Include="HotelExampleBookRoomCantFailTest.cs" />
     <Compile Include="HotelExampleEmailCanFailTest.cs" />
     <Compile Include="MockedServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

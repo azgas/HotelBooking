@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HotelBaseClass.cs" />
+    <Compile Include="HotelExampleBookRoomCantFail.cs" />
     <Compile Include="HotelFactory.cs" />
     <Compile Include="HotelExampleEmailCanFail.cs" />
     <Compile Include="HotelExample.cs" />

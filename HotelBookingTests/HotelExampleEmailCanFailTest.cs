@@ -44,7 +44,7 @@ namespace HotelBookingTests
         public void ShouldBookARoom()
         {
             DateTime date = DateTime.Parse("01.01.2020");
-            BookingService.Stub(x => x.Book(date)).Return(true);
+            BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
             Assert.That(_hotel.BookRoom(date), Is.EqualTo(true));
 
         }
@@ -54,7 +54,7 @@ namespace HotelBookingTests
         {
 
             DateTime date2 = DateTime.Now.AddDays(4);
-            BookingService.Stub(x => x.Book(date2)).Return(true);
+            BookingService.Stub(x => x.Book(date2)).Return(true).Repeat.Once();
             Assert.That(_hotel.BookRoom(date2), Is.EqualTo(false));
         }
 
@@ -65,8 +65,8 @@ namespace HotelBookingTests
             DateTime date = DateTime.Parse("01.01.2020");
             int creditCardNumber = 1234567;
             double price = 200;
-            BookingService.Stub(x => x.Book(date)).Return(true);
-            PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true);
+            BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
+            PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true).Repeat.Once();
 
             ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
             Assert.True(result.EmailSentSuccess);

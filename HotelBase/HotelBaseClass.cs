@@ -31,7 +31,7 @@ namespace HotelBase
             Logger = logger;
         }
 
-        internal bool SendEmail(string email)
+        internal virtual bool SendEmail(string email)
         {
             bool validEmail = StringHelper.IsValidEmail(email);
             if (validEmail)
