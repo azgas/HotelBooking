@@ -1,4 +1,7 @@
-﻿using HotelBase;
+﻿using System;
+using System.Collections.Generic;
+using HotelBase;
+using HotelBooking;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -12,7 +15,7 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            _hotel = MockRepository.GeneratePartialMock<HotelExampleEmailCanFail>(BookingService, PaymentService,
+            _hotel = MockRepository.GenerateMock<HotelBaseClass>(BookingService, PaymentService,
                 Logger);
         }
 
@@ -31,6 +34,33 @@ namespace HotelBookingTests
             Assert.That(_hotel.MakePayment(245, 0.99), Is.EqualTo(false));
             Assert.That(_hotel.MakePayment(250, 200), Is.EqualTo(true));
             Assert.That(_hotel.MakePayment(250, 00), Is.EqualTo(false));
+        }
+
+        [Test]
+        public void ShouldProcessPartialSteps()
+        {
+            DateTime date = DateTime.Now;
+            double price = 0;
+            int creditCardNumber = 22;
+            string email = "test";
+            PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true);
+
+            _hotel.Stub(action => action.Operations).Return(new List<HotelOperation>
+            {
+                new HotelOperation(Operation.CheckPrice, 1, true),
+                new HotelOperation(Operation.MakePayment, 2, true),
+                new HotelOperation(Operation.BookRoom, 3, false),
+                new HotelOperation(Operation.SendEmail, 4, true),
+                new HotelOperation(Operation.GenerateReservationNumber, 5, false)
+            });
+
+            ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
+            Assert.False(result.Success);
+            Assert.True(result.PriceValidationSuccess);
+            Assert.True(result.PaymentSuccess);
+            Assert.False(result.ReservationSuccess);
+            Assert.False(result.EmailSentSuccess);
+
         }
     }
 }

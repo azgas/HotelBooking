@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HotelBooking;
 
 namespace HotelBase
@@ -7,8 +8,17 @@ namespace HotelBase
     {
         public HotelExampleBookRoomCantFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(bookingService, paymentService, logger)
         {
-
+            Operations = new List<HotelOperation>
+            {
+                new HotelOperation(Operation.CheckPrice, 1, false),
+                new HotelOperation(Operation.MakePayment, 2, false),
+                new HotelOperation(Operation.SendEmail, 3, false),
+                new HotelOperation(Operation.BookRoom, 4, true),
+                new HotelOperation(Operation.GenerateReservationNumber, 5, false)
+            };
         }
+
+        public override List<HotelOperation> Operations { get; }
 
         internal override bool CheckPrice(double price, DateTime date)
         {
@@ -22,28 +32,6 @@ namespace HotelBase
             if (email == null)
                 return false;
             return true;
-        }
-
-        public ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
-        {
-            bool priceValid = CheckPrice(price, date);
-            bool paymentMade = MakePayment(creditCardNumber, price);
-            bool emailSent = SendEmail(email);
-            bool roomBooked = BookRoom(date);
-            string reservationNumber;
-            bool success;
-            if (roomBooked)
-            {
-                reservationNumber = GenerateReservationNumber();
-                success = true;
-            }
-            else
-            {
-                reservationNumber = null;
-                success = false;
-            }
-
-            return new ReservationResult(success, reservationNumber, priceValid, roomBooked, paymentMade, emailSent);
         }
     }
 }

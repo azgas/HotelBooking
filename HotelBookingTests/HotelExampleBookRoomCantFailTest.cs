@@ -30,10 +30,6 @@ namespace HotelBookingTests
             ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
 
             Assert.False(result.Success);
-            Assert.True(result.PriceValidationSuccess);
-            Assert.True(result.EmailSentSuccess);
-            Assert.True(result.PaymentSuccess);
-            Assert.False(result.ReservationSuccess);
         }
 
         [Test]
@@ -49,10 +45,6 @@ namespace HotelBookingTests
             ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
 
             Assert.True(result.Success);
-            Assert.False(result.PriceValidationSuccess);
-            Assert.False(result.EmailSentSuccess);
-            Assert.False(result.PaymentSuccess);
-            Assert.True(result.ReservationSuccess);
         }
     }
 }

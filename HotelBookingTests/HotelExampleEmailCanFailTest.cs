@@ -69,10 +69,6 @@ namespace HotelBookingTests
             PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true).Repeat.Once();
 
             ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
-            Assert.True(result.EmailSentSuccess);
-            Assert.True(result.PaymentSuccess);
-            Assert.True(result.PriceValidationSuccess);
-            Assert.True(result.ReservationSuccess);
             Assert.True(result.Success);
         }
     }

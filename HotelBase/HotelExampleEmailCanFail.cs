@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HotelBooking;
 
 namespace HotelBase
@@ -9,27 +10,21 @@ namespace HotelBase
         private const double PriceAfterSeason = 200;
         private const string Id = "01";
 
-        public virtual ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
+        public HotelExampleEmailCanFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger)
+            : base(bookingService,
+                paymentService, logger)
         {
-            bool priceValidation = CheckPrice(price, date);
-            if (!priceValidation)
-                return new ReservationResult(false);
-
-            bool roomBooked = BookRoom(date);
-            if (!roomBooked)
-                return new ReservationResult(false, priceValidationSuccess: priceValidation);
-
-            bool paymentMade = MakePayment(creditCardNumber, price);
-            if (!paymentMade)
-                return new ReservationResult(false, priceValidationSuccess: priceValidation,
-                    reservationSuccess: roomBooked);
-
-            bool emailSent = SendEmail(email);
-
-            return new ReservationResult(true, priceValidationSuccess: priceValidation,
-                paymentSuccess: paymentMade, reservationSuccess: roomBooked, emailSentSuccess: emailSent,
-                reservationNumber: GenerateReservationNumber());
+            Operations = new List<HotelOperation>
+            {
+                new HotelOperation(Operation.CheckPrice, 1, false),
+                new HotelOperation(Operation.MakePayment, 2, false),
+                new HotelOperation(Operation.SendEmail, 3, false),
+                new HotelOperation(Operation.BookRoom, 4, true),
+                new HotelOperation(Operation.GenerateReservationNumber, 5, false)
+            };
         }
+
+        public override List<HotelOperation> Operations { get; }
 
         internal override bool CheckPrice(double price, DateTime date)
         {
@@ -37,9 +32,7 @@ namespace HotelBase
             if (date.Month > 5 && date.Month < 9)
                 actualPrice = SeasonPrice;
             else
-            {
                 actualPrice = PriceAfterSeason;
-            }
 
             return Math.Abs(price - actualPrice) < 0.01;
         }
@@ -61,12 +54,6 @@ namespace HotelBase
             if (!roomBooked) return false;
             Logger.Write(Messages.BookedRoom + Id);
             return true;
-        }
-
-        public HotelExampleEmailCanFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger)
-            : base(bookingService,
-                paymentService, logger)
-        {
         }
     }
 }

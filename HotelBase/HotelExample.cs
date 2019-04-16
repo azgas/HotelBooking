@@ -1,39 +1,23 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using HotelBooking;
 
 namespace HotelBase
 {
     public class HotelExample : HotelBaseClass, IHotel
     {
-        public virtual ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
-        {
-            bool priceValidation = CheckPrice(price, date);
-            if (!priceValidation)
-                return new ReservationResult(false);
-
-
-            bool paymentMade = MakePayment(creditCardNumber, price);
-            if (!paymentMade)
-                return new ReservationResult(false, priceValidationSuccess: priceValidation);
-
-            bool roomBooked = BookRoom(date);
-            if (!roomBooked)
-                return new ReservationResult(false, priceValidationSuccess: priceValidation,
-                    paymentSuccess: paymentMade);
-
-            bool emailSent = SendEmail(email);
-            if (!emailSent)
-                return new ReservationResult(false, priceValidationSuccess: priceValidation,
-                    paymentSuccess: paymentMade, reservationSuccess: roomBooked);
-
-            return new ReservationResult(true, priceValidationSuccess: priceValidation,
-                paymentSuccess: paymentMade, reservationSuccess: roomBooked, emailSentSuccess: emailSent,
-                reservationNumber: GenerateReservationNumber());
-        }
-
         public HotelExample(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(
             bookingService, paymentService, logger)
         {
+            Operations = new List<HotelOperation>
+            {
+                new HotelOperation(Operation.CheckPrice, 1, true),
+                new HotelOperation(Operation.MakePayment, 2, true),
+                new HotelOperation(Operation.BookRoom, 3, true),
+                new HotelOperation(Operation.SendEmail, 4, true),
+                new HotelOperation(Operation.GenerateReservationNumber, 5, false)
+            };
         }
+
+        public sealed override List<HotelOperation> Operations { get; }
     }
 }
