@@ -68,9 +68,10 @@ namespace HotelBase
             bool priceValid = false;
             string reservationNumber = null;
 
-            while (Operations.Count != 0)
+            List<HotelOperation> sortedOperations = Operations.OrderBy(x => x.Order).ToList();
+
+            foreach (HotelOperation currentOperation in sortedOperations)
             {
-                HotelOperation currentOperation = Operations.OrderBy(o => o.Order).First();
                 bool stepSuccess = true;
 
                 switch (currentOperation.Operation)
@@ -101,10 +102,8 @@ namespace HotelBase
                     success = false;
                     break;
                 }
-
-                Operations.Remove(currentOperation);
             }
-
+            
             return new ReservationResult(success, reservationNumber, priceValid, roomBooked, paymentMade, emailSent);
         }
     }
