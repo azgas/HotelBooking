@@ -71,5 +71,20 @@ namespace HotelBookingTests
             ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
             Assert.True(result.Success);
         }
+
+        [Test]
+        public void ShouldProcessMakePaymentBeforeBookRoom()
+        {
+            double price = 200;
+            DateTime date = DateTime.Parse("01.01.2020");
+            string email = "test@test.com";
+            int creditCardNumber = 1234567;
+
+            BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
+            PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(false).Repeat.Once();
+
+            ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
+            Assert.False(result.ReservationSuccess);
+        }
     }
 }
