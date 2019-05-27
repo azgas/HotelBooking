@@ -1,21 +1,15 @@
 ﻿namespace HotelBooking
 {
-    public class KazexPayment : IPaymentService
+    public class KazexPayment : IPaymentServiceTwoStep
     {
-        private bool _authorized = false;
 
         public bool Pay(int creditCardNumber, double price)
         {
-            if (!_authorized)
-            {
-                _authorized = true;
-                return Authorize(creditCardNumber);
-            }
-
+            if(!Authorize(creditCardNumber)) return false;
             return Capture(price);
         }
 
-        private bool Authorize(int creditCardNumber)
+        public bool Authorize(int creditCardNumber)
         {
             if (creditCardNumber.ToString().Length > 7)
                 return true;

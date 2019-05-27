@@ -12,22 +12,24 @@ namespace HotelBookingTests
         private HotelExampleTwoStepsPayment _hotel;
         private readonly DateTime _dummyDate = DateTime.Now;
         private string _dummyEmail = "test@test.com";
+        private double _dummyPrice = 20;
+        private int _dummyCreditCardNumber = 222;
+        private readonly IPaymentServiceTwoStep _paymentService = MockRepository.GenerateMock<IPaymentServiceTwoStep>();
 
         [SetUp]
         public void Setup()
         {
-            KazexPayment paymentService = new KazexPayment();
-            _hotel = new HotelExampleTwoStepsPayment(BookingService, paymentService, Logger);
+
+            _hotel = new HotelExampleTwoStepsPayment(BookingService, _paymentService, Logger);
         }
 
         [Test]
         public void ShouldFailProcessIfAuthorizationUnsuccessful()
         {
-            double price = 20;
-            int creditCardNumber = 222;
+            _paymentService.Stub(x => x.Authorize(_dummyCreditCardNumber)).Return(false).Repeat.Once();
             BookingService.Stub(x => x.Book(_dummyDate)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, price, creditCardNumber, _dummyEmail);
+            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
             Assert.False(result.Success);
             Assert.False(result.ReservationSuccess);
         }
@@ -35,11 +37,11 @@ namespace HotelBookingTests
         [Test]
         public void ShouldFailProcessIfCaptureUnsuccessful()
         {
-            double price = 2;
-            int creditCardNumber = 222543765;
+            _paymentService.Stub(x => x.Authorize(_dummyCreditCardNumber)).Return(true).Repeat.Once();
+            _paymentService.Stub(x => x.Capture(_dummyPrice)).Return(false).Repeat.Once();
             BookingService.Stub(x => x.Book(_dummyDate)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, price, creditCardNumber, _dummyEmail);
+            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
             Assert.False(result.Success);
             Assert.True(result.ReservationSuccess);
         }
@@ -47,12 +49,27 @@ namespace HotelBookingTests
         [Test]
         public void ShouldMakeSuccessfulReservationIfPaymentSuccessful()
         {
-            double price = 20;
-            int creditCardNumber = 222543765;
+            _paymentService.Stub(x => x.Authorize(_dummyCreditCardNumber)).Return(true).Repeat.Once();
+            _paymentService.Stub(x => x.Capture(_dummyPrice)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, price, creditCardNumber, _dummyEmail);
+            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
             Assert.True(result.Success);
             Assert.True(result.PaymentSuccess);
+        }
+
+        [Test]
+        public void ShouldProcessWholeReservation_WhenNoOperationFails()
+        {
+            _paymentService.Stub(x => x.Authorize(_dummyCreditCardNumber)).Return(true).Repeat.Once();
+            _paymentService.Stub(x => x.Capture(_dummyPrice)).Return(true).Repeat.Once();
+            BookingService.Stub(x => x.Book(_dummyDate)).Return(true).Repeat.Once();
+
+            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
+            Assert.True(result.Success);
+            Assert.True(result.PriceValidationSuccess);
+            Assert.True(result.PaymentSuccess);
+            Assert.True(result.ReservationSuccess);
+            Assert.True(result.EmailSentSuccess);
         }
     }
 }

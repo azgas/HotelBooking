@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using HotelBooking;
 
 namespace HotelBase
@@ -8,21 +9,21 @@ namespace HotelBase
     public abstract class HotelBaseClass
     {
         private readonly IBookingService _bookingService;
-        private readonly IPaymentService _paymentService;
+        internal readonly IPaymentService PaymentService;
         internal readonly ILogger Logger;
 
         protected HotelBaseClass(IBookingService bookingService, IPaymentService paymentService, ILogger logger)
         {
             _bookingService = bookingService;
-            _paymentService = paymentService;
+            PaymentService = paymentService;
             Logger = logger;
         }
 
         public abstract List<HotelOperation> Operations { get; }
 
-        internal bool MakePayment(int creditCardNumber, double price)
+        internal virtual bool MakePayment(int creditCardNumber, double price, Operation operation = Operation.MakePayment)
         {
-            var successfulPayment = _paymentService.Pay(creditCardNumber, price);
+            var successfulPayment = PaymentService.Pay(creditCardNumber, price);
 
             if (!successfulPayment)
                 Logger.Write(Messages.PaymentFail);
@@ -58,7 +59,7 @@ namespace HotelBase
         {
             return _bookingService.Book(date);
         }
-
+        
         public ReservationResult Reserve(DateTime date, double price, int creditCardNumber, string email)
         {
             bool paymentMade = false;
@@ -85,7 +86,9 @@ namespace HotelBase
                         stepSuccess = priceValid;
                         break;
                     case Operation.MakePayment:
-                        paymentMade = MakePayment(creditCardNumber, price);
+                    case Operation.Authorization:
+                    case Operation.Capture:
+                        paymentMade = MakePayment(creditCardNumber, price, currentOperation.Operation);
                         stepSuccess = paymentMade;
                         break;
                     case Operation.SendEmail:
@@ -103,7 +106,7 @@ namespace HotelBase
                     break;
                 }
             }
-            
+
             return new ReservationResult(success, reservationNumber, priceValid, roomBooked, paymentMade, emailSent);
         }
     }

@@ -14,5 +14,5 @@
         public bool ShouldFailWholeProcess { get; }
     }
 
-    public enum Operation { BookRoom, SendEmail, MakePayment, CheckPrice, GenerateReservationNumber}
+    public enum Operation { BookRoom, SendEmail, MakePayment, CheckPrice, GenerateReservationNumber, Capture, Authorization}
 }
