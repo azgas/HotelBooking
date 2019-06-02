@@ -1,4 +1,5 @@
-﻿using HotelBooking;
+﻿using HotelBase;
+using HotelBooking;
 using Rhino.Mocks;
 
 namespace HotelBookingTests
@@ -9,5 +10,6 @@ namespace HotelBookingTests
         protected readonly IPaymentService PaymentService = MockRepository.GenerateMock<IPaymentService>();
         protected readonly IBookingService BookingService = MockRepository.GenerateMock<IBookingService>();
         protected readonly ILogger Logger = MockRepository.GenerateMock<ILogger>();
+        protected IReservationService Service;
     }
 }

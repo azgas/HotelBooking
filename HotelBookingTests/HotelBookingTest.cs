@@ -15,8 +15,9 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService, Logger)).Return(new HotelExampleEmailCanFail(BookingService, PaymentService, Logger));
-            Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService, Logger)).Return(new HotelExample(BookingService, PaymentService, Logger));
+            Service = new ReservationServiceOneStepPayment(BookingService, PaymentService, Logger);
+            Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService, Logger)).Return(new HotelExampleEmailCanFail(Service));
+            Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService, Logger)).Return(new HotelExample(Service));
             Factory.Stub(f => f.ReturnHotel(3, BookingService, PaymentService, Logger)).Return(null);
             Factory.Stub(f => f.GetHotelIds()).Return(new List<int> {1, 2});
 

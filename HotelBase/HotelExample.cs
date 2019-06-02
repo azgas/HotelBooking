@@ -5,8 +5,8 @@ namespace HotelBase
 {
     public class HotelExample : HotelBaseClass, IHotel
     {
-        public HotelExample(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(
-            bookingService, paymentService, logger)
+        public HotelExample(IReservationService service) : base(
+            service)
         {
             Operations = new List<HotelOperation>
             {

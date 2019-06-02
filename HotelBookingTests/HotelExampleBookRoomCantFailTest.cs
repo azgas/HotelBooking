@@ -14,7 +14,8 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            _hotel = new HotelExampleBookRoomCantFail(BookingService, PaymentService, Logger);
+            Service = new ReservationServiceOneStepPayment(BookingService, PaymentService, Logger);
+            _hotel = new HotelExampleBookRoomCantFail(Service);
         }
 
         [Test]

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Net;
-using HotelBooking;
 
 namespace HotelBase
 {
     public class HotelExampleTwoStepsPayment : HotelBaseClass
     {
-        public HotelExampleTwoStepsPayment(IBookingService bookingService, IPaymentServiceTwoStep paymentService, ILogger logger) : base(bookingService, paymentService, logger)
+        public HotelExampleTwoStepsPayment(IReservationService service) : base(service)
         {
             Operations = new List<HotelOperation>
             {
@@ -20,20 +18,5 @@ namespace HotelBase
         }
 
         public override List<HotelOperation> Operations { get; }
-
-        internal override bool MakePayment(int creditCardNumber, double price, Operation operation = Operation.MakePayment)
-        {
-            if (!(PaymentService is IPaymentServiceTwoStep paymentService)) return false;
-
-            switch (operation)
-            {
-                case Operation.Authorization:
-                    return paymentService.Authorize(creditCardNumber);
-                case Operation.Capture:
-                    return paymentService.Capture(price);
-                default:
-                    return false;
-            }
-        }
     }
 }

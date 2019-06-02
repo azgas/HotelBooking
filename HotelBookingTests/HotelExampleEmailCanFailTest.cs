@@ -9,12 +9,16 @@ namespace HotelBookingTests
     [TestFixture]
     public class HotelExampleEmailCanFailTest : MockedServices
     {
-        private HotelExampleEmailCanFail _hotel; 
+        private HotelExampleEmailCanFail _hotel;
+        private int dummyCreditCard = 2222;
+        private string dummyEmail = "test@test.gmail.com@";
+        private double dummyPrice = 200;
 
         [SetUp]
         public void Setup()
         {
-            _hotel = new HotelExampleEmailCanFail(BookingService, PaymentService, Logger);
+            Service = new ReservationServiceCheckSeasonPrice(BookingService, PaymentService, Logger);
+            _hotel = new HotelExampleEmailCanFail(Service);
         }
 
         [Test]
@@ -22,7 +26,8 @@ namespace HotelBookingTests
         {
             DateTime date = DateTime.Parse("01.06.2019");
             double price = 200;
-            Assert.That(_hotel.CheckPrice(price, date), Is.EqualTo(false));
+            ReservationResult result = _hotel.Reserve(date, price, dummyCreditCard, dummyEmail);
+            Assert.AreEqual(result.PriceValidationSuccess, false);
 
         }
 
@@ -31,13 +36,22 @@ namespace HotelBookingTests
         {
             DateTime date = DateTime.Parse("02.01.2020");
             double price = 200;
-            Assert.That(_hotel.CheckPrice(price, date), Is.EqualTo(true));
+            ReservationResult result = _hotel.Reserve(date, price, dummyCreditCard, dummyEmail);
+            Assert.AreEqual(result.PriceValidationSuccess, true);
         }
 
         [Test]
         public void GeneratedReservationNumberShouldBeginWith01()
         {
-            Assert.That(_hotel.GenerateReservationNumber().StartsWith("01"));
+            string email = "test@test.com";
+            DateTime date = DateTime.Parse("01.01.2020");
+            int creditCardNumber = 1234567;
+            double price = 200;
+            BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
+            PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true).Repeat.Once();
+
+            ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
+            Assert.That(result.ReservationNumber.StartsWith("01"));
         }
 
         [Test]
@@ -45,17 +59,20 @@ namespace HotelBookingTests
         {
             DateTime date = DateTime.Parse("01.01.2020");
             BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
-            Assert.That(_hotel.BookRoom(date), Is.EqualTo(true));
+            PaymentService.Stub(x => x.Pay(dummyCreditCard, dummyPrice)).Return(true).Repeat.Once();
+            ReservationResult result = _hotel.Reserve(date, dummyPrice, dummyCreditCard, dummyEmail);
+            Assert.AreEqual(result.ReservationSuccess, true);
 
         }
 
         [Test]
         public void ShouldNotBookARoomIfDateIsTooEarly()
         {
-
             DateTime date2 = DateTime.Now.AddDays(4);
             BookingService.Stub(x => x.Book(date2)).Return(true).Repeat.Once();
-            Assert.That(_hotel.BookRoom(date2), Is.EqualTo(false));
+            PaymentService.Stub(x => x.Pay(dummyCreditCard, dummyPrice)).Return(true).Repeat.Once();
+            ReservationResult result = _hotel.Reserve(date2, dummyPrice, dummyCreditCard, dummyEmail);
+            Assert.AreEqual(result.ReservationSuccess, false);
         }
 
        [Test]

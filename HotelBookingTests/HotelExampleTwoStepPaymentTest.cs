@@ -19,8 +19,8 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-
-            _hotel = new HotelExampleTwoStepsPayment(BookingService, _paymentService, Logger);
+            Service = new ReservationServiceTwoStepPayment(BookingService, _paymentService, Logger);
+            _hotel = new HotelExampleTwoStepsPayment(Service);
         }
 
         [Test]

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HotelBooking;
 
 namespace HotelBase
 {
     public class HotelExampleBookRoomCantFail : HotelBaseClass, IHotel
     {
-        public HotelExampleBookRoomCantFail(IBookingService bookingService, IPaymentService paymentService, ILogger logger) : base(bookingService, paymentService, logger)
+        public HotelExampleBookRoomCantFail(IReservationService service) : base(service)
         {
             Operations = new List<HotelOperation>
             {
@@ -19,19 +18,5 @@ namespace HotelBase
         }
 
         public override List<HotelOperation> Operations { get; }
-
-        internal override bool CheckPrice(double price, DateTime date)
-        {
-            if (double.IsNaN(price) || date == default(DateTime))
-                return false;
-            return true;
-        }
-
-        internal override bool SendEmail(string email)
-        {
-            if (email == null)
-                return false;
-            return true;
-        }
     }
 }
