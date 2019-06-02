@@ -9,7 +9,6 @@ namespace HotelBase
             bool validEmail = StringHelper.IsValidEmail(email);
             if (validEmail)
                 return true;
-/*            Logger.Write(Messages.InvalidEmail);*/
             return false;
         }
 
