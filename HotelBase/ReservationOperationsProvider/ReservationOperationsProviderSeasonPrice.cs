@@ -17,7 +17,8 @@ namespace HotelBooking.ReservationOperationsProvider
         private const double PriceAfterSeason = 200;
         private const string Id = "01";
 
-        public ReservationOperationsProviderSeasonPrice(IBookingService bookingService, IPaymentService paymentService,
+        public ReservationOperationsProviderSeasonPrice(IBookingService bookingService, 
+            IPaymentService paymentService,
             ILogger logger)
         {
             BookingService = bookingService;
@@ -25,7 +26,9 @@ namespace HotelBooking.ReservationOperationsProvider
             Logger = logger;
         }
 
-        public KeyValuePair<string, bool> ProcessOperation(DateTime date, double price, int creditCardNumber,
+        public KeyValuePair<string, bool> ProcessOperation(DateTime date,
+            double price,
+            int creditCardNumber,
             string email,
             HotelOperation operation)
         {
@@ -80,11 +83,10 @@ namespace HotelBooking.ReservationOperationsProvider
 
         protected override bool CheckPrice(double price, DateTime date)
         {
-            double actualPrice;
+            var actualPrice = PriceAfterSeason;
+
             if (date.Month > 5 && date.Month < 9)
                 actualPrice = SeasonPrice;
-            else
-                actualPrice = PriceAfterSeason;
 
             return Math.Abs(price - actualPrice) < 0.01;
         }

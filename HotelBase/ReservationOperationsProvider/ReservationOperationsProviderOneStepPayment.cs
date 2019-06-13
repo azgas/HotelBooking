@@ -13,14 +13,19 @@ namespace HotelBooking.ReservationOperationsProvider
         internal readonly IPaymentService PaymentService;
         internal readonly ILogger Logger;
 
-        public ReservationOperationsProviderOneStepPayment(IBookingService bookingService, IPaymentService paymentService, ILogger logger)
+        public ReservationOperationsProviderOneStepPayment(IBookingService bookingService,
+            IPaymentService paymentService,
+            ILogger logger)
         {
             BookingService = bookingService;
             PaymentService = paymentService;
             Logger = logger;
         }
 
-        public KeyValuePair<string, bool> ProcessOperation(DateTime date, double price, int creditCardNumber, string email,
+        public KeyValuePair<string, bool> ProcessOperation(DateTime date,
+            double price,
+            int creditCardNumber,
+            string email,
             HotelOperation operation)
         {
             bool stepSuccess = false;

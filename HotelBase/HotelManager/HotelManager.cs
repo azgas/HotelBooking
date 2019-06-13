@@ -20,7 +20,9 @@ namespace HotelBooking.HotelManager
         private IHotel _hotel;
         private IReservationService _reservationService;
 
-        public HotelManager(IHotelFactory factory, IPaymentService paymentService, IBookingService bookingService,
+        public HotelManager(IHotelFactory factory, 
+            IPaymentService paymentService, 
+            IBookingService bookingService,
             ILogger logger)
         {
             _factory = factory;
