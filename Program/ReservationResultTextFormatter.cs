@@ -11,25 +11,12 @@ namespace Program
             result.AppendLine();
             result.Append("Process result: ");
             result.Append(resResult.Success);
-            result.AppendLine();
-            result.Append("Payment made: ");
-            result.Append(resResult.PaymentSuccess);
-            result.AppendLine();
-            result.Append("Email sent: ");
-            result.Append(resResult.EmailSentSuccess);
-            result.AppendLine();
-            result.Append("Price valid: ");
-            result.Append(resResult.PriceValidationSuccess);
-            result.AppendLine();
-            result.Append("Room booked: ");
-            result.Append(resResult.ReservationSuccess);
-            result.AppendLine();
-            if (resResult.ReservationNumber != null)
+            foreach (var operationResult in resResult.OperationsResult)
             {
-                result.Append("Reservation number: ");
-                result.Append(resResult.ReservationNumber);
+                result.AppendLine();
+                result.Append(operationResult.Key + ": ");
+                result.Append(operationResult.Value);
             }
-
             return result.ToString();
         }
     }

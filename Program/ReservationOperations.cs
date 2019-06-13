@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using HotelBase;
 using HotelBooking;
+using HotelBooking.BookingExternalService;
+using HotelBooking.HotelFactory;
+using HotelBooking.HotelManager;
+using HotelBooking.Logger;
+using HotelBooking.PaymentExternalService;
 
 namespace Program
 {

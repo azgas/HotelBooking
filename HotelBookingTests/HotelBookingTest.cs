@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using HotelBase;
 using HotelBooking;
+using HotelBooking.HotelExamples;
+using HotelBooking.HotelManager;
+using HotelBooking.ReservationOperationsProvider;
+using HotelBooking.ReservationService;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -15,10 +18,11 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            Service = new ReservationServiceOneStepPayment(BookingService, PaymentService, Logger);
-            Factory.Stub(f => f.ReturnHotel(1, BookingService, PaymentService, Logger)).Return(new HotelExampleEmailCanFail(Service));
-            Factory.Stub(f => f.ReturnHotel(2, BookingService, PaymentService, Logger)).Return(new HotelExample(Service));
-            Factory.Stub(f => f.ReturnHotel(3, BookingService, PaymentService, Logger)).Return(null);
+            OperationsProvider = new ReservationOperationsProviderOneStepPayment(BookingService, PaymentService, Logger);
+            Service = new ReservationService(OperationsProvider);
+            Factory.Stub(f => f.ReturnHotel(1)).Return(new HotelExampleEmailCanFail());
+            Factory.Stub(f => f.ReturnHotel(2)).Return(new HotelExample());
+            Factory.Stub(f => f.ReturnHotel(3)).Return(null);
             Factory.Stub(f => f.GetHotelIds()).Return(new List<int> {1, 2});
 
             _manager = new HotelManager(Factory, PaymentService, BookingService, Logger);

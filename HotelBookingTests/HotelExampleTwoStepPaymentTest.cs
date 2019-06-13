@@ -1,6 +1,10 @@
 ﻿using System;
-using HotelBase;
+using System.Linq;
 using HotelBooking;
+using HotelBooking.HotelExamples;
+using HotelBooking.PaymentExternalService;
+using HotelBooking.ReservationOperationsProvider;
+using HotelBooking.ReservationService;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -19,8 +23,10 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            Service = new ReservationServiceTwoStepPayment(BookingService, _paymentService, Logger);
-            _hotel = new HotelExampleTwoStepsPayment(Service);
+            OperationsProvider =
+                new ReservationOperationsProviderTwoStepPayment(BookingService, _paymentService, Logger);
+            Service = new ReservationService(OperationsProvider);
+            _hotel = new HotelExampleTwoStepsPayment();
         }
 
         [Test]
@@ -29,9 +35,10 @@ namespace HotelBookingTests
             _paymentService.Stub(x => x.Authorize(_dummyCreditCardNumber)).Return(false).Repeat.Once();
             BookingService.Stub(x => x.Book(_dummyDate)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
+            ReservationResult result =
+                Service.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail, _hotel);
             Assert.False(result.Success);
-            Assert.False(result.ReservationSuccess);
+            Assert.False(result.OperationsResult.Any(x => x.Key == OperationDescriptions.PriceValidation));
         }
 
         [Test]
@@ -41,9 +48,10 @@ namespace HotelBookingTests
             _paymentService.Stub(x => x.Capture(_dummyPrice)).Return(false).Repeat.Once();
             BookingService.Stub(x => x.Book(_dummyDate)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
+            ReservationResult result =
+                Service.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail, _hotel);
             Assert.False(result.Success);
-            Assert.True(result.ReservationSuccess);
+            Assert.False(result.OperationsResult.Any(x => x.Key == OperationDescriptions.Email));
         }
 
         [Test]
@@ -52,9 +60,10 @@ namespace HotelBookingTests
             _paymentService.Stub(x => x.Authorize(_dummyCreditCardNumber)).Return(true).Repeat.Once();
             _paymentService.Stub(x => x.Capture(_dummyPrice)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
+            ReservationResult result =
+                Service.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail, _hotel);
             Assert.True(result.Success);
-            Assert.True(result.PaymentSuccess);
+            Assert.True(result.OperationsResult.Any(x => x.Key == OperationDescriptions.Capture && x.Value));
         }
 
         [Test]
@@ -64,12 +73,14 @@ namespace HotelBookingTests
             _paymentService.Stub(x => x.Capture(_dummyPrice)).Return(true).Repeat.Once();
             BookingService.Stub(x => x.Book(_dummyDate)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail);
+            ReservationResult result =
+                Service.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmail, _hotel);
             Assert.True(result.Success);
-            Assert.True(result.PriceValidationSuccess);
-            Assert.True(result.PaymentSuccess);
-            Assert.True(result.ReservationSuccess);
-            Assert.True(result.EmailSentSuccess);
+            Assert.True(result.OperationsResult.Any(x => x.Key == OperationDescriptions.PriceValidation && x.Value));
+            Assert.True(result.OperationsResult.Any(x => x.Key == OperationDescriptions.Capture && x.Value));
+            Assert.True(result.OperationsResult.Any(x => x.Key == OperationDescriptions.Authorization && x.Value));
+            Assert.True(result.OperationsResult.Any(x => x.Key == OperationDescriptions.Booking && x.Value));
+            Assert.True(result.OperationsResult.Any(x => x.Key == OperationDescriptions.Email && x.Value));
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
-using HotelBase;
 using HotelBooking;
+using HotelBooking.HotelExamples;
+using HotelBooking.ReservationOperationsProvider;
+using HotelBooking.ReservationService;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -14,8 +16,10 @@ namespace HotelBookingTests
         [SetUp]
         public void Setup()
         {
-            Service = new ReservationServiceOneStepPayment(BookingService, PaymentService, Logger);
-            _hotel = new HotelExampleBookRoomCantFail(Service);
+            OperationsProvider =
+                new ReservationOperationsProviderOneStepPayment(BookingService, PaymentService, Logger);
+            Service = new ReservationService(OperationsProvider);
+            _hotel = new HotelExampleBookRoomCantFail();
         }
 
         [Test]
@@ -28,7 +32,7 @@ namespace HotelBookingTests
             BookingService.Stub(x => x.Book(date)).Return(false).Repeat.Once();
             PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
+            ReservationResult result = Service.Reserve(date, price, creditCardNumber, email, _hotel);
 
             Assert.False(result.Success);
         }
@@ -36,14 +40,14 @@ namespace HotelBookingTests
         [Test]
         public void ShouldReturnSuccessfulReservationResultIfBookRoomSuccess()
         {
-            string email = null;
+            string email = "";
             DateTime date = default(DateTime);
             int creditCardNumber = 1234567;
             double price = double.NaN;
             BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
             PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(false).Repeat.Once();
 
-            ReservationResult result = _hotel.Reserve(date, price, creditCardNumber, email);
+            ReservationResult result = Service.Reserve(date, price, creditCardNumber, email, _hotel);
 
             Assert.True(result.Success);
         }
