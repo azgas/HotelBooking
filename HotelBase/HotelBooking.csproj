@@ -68,7 +68,7 @@
     <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderTwoStepPayment.cs" />
     <Compile Include="ReservationResult.cs" />
     <Compile Include="ReservationService\ReservationService.cs" />
-    <Compile Include="ReservationService\ReservationServiceFactory.cs" />
+    <Compile Include="ReservationOperationsProvider\ReservationOperationsFactory.cs" />
     <Compile Include="ReservationOperationsProvider\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup />
