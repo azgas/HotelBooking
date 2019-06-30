@@ -53,6 +53,15 @@
     <Compile Include="HotelManager\HotelManager.cs" />
     <Compile Include="Logger\ConsoleLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Operations\EmailSender.cs" />
+    <Compile Include="Operations\OperationBase.cs" />
+    <Compile Include="Operations\Payment.cs" />
+    <Compile Include="Operations\PaymentCapture.cs" />
+    <Compile Include="Operations\PaymentAuthorization.cs" />
+    <Compile Include="Operations\PriceCheckerSeason.cs" />
+    <Compile Include="Operations\PriceChecker.cs" />
+    <Compile Include="Operations\RoomBookerSeason.cs" />
+    <Compile Include="Operations\RoomBooker.cs" />
     <Compile Include="PaymentExternalService\IPaymentService.cs" />
     <Compile Include="PaymentExternalService\IPaymentServiceTwoStep.cs" />
     <Compile Include="PaymentExternalService\PaymentService.cs" />
@@ -62,7 +71,6 @@
     <Compile Include="ReservationOperationsProvider\Messages.cs" />
     <Compile Include="ReservationOperationsProvider\OperationDescriptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderCommonFunctions.cs" />
     <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderOneStepPayment.cs" />
     <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderSeasonPrice.cs" />
     <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderTwoStepPayment.cs" />

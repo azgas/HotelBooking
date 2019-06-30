@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using HotelBooking.BookingExternalService;
 using HotelBooking.HotelExamples;
 using HotelBooking.Logger;
+using HotelBooking.Operations;
 using HotelBooking.PaymentExternalService;
 
 namespace HotelBooking.ReservationOperationsProvider
 {
-    public class ReservationOperationsProviderOneStepPayment : ReservationOperationsProviderCommonFunctions, IReservationOperationsProvider
+    public class ReservationOperationsProviderOneStepPayment : IReservationOperationsProvider
     {
         internal readonly IBookingService BookingService;
         internal readonly IPaymentService PaymentService;
@@ -33,21 +34,19 @@ namespace HotelBooking.ReservationOperationsProvider
             switch (operation.Operation)
             {
                 case Operation.BookRoom:
-                    stepSuccess = BookRoom(date);
+                    stepSuccess = new RoomBooker(date, price, creditCardNumber, email, BookingService).Execute();
                     operationDescription = OperationDescriptions.Booking;
                     break;
                 case Operation.CheckPrice:
-                    stepSuccess = CheckPrice(price, date);
+                    stepSuccess = new PriceChecker(date, price, creditCardNumber, email).Execute();
                     operationDescription = OperationDescriptions.PriceValidation;
                     break;
                 case Operation.MakePayment:
-                    stepSuccess = MakePayment(creditCardNumber, price);
+                    stepSuccess = new Payment(date, price, creditCardNumber, email, PaymentService, Logger).Execute();
                     operationDescription = OperationDescriptions.Payment;
                     break;
                 case Operation.SendEmail:
-                    stepSuccess = SendEmail(email);
-                    if (!stepSuccess)
-                        Logger.Write(Messages.InvalidEmail);
+                    stepSuccess = new EmailSender(date, price, creditCardNumber, email, Logger).Execute();
                     operationDescription = OperationDescriptions.Email;
                     break;
                 case Operation.GenerateReservationNumber:
@@ -61,19 +60,6 @@ namespace HotelBooking.ReservationOperationsProvider
             }
 
             return new KeyValuePair<string, bool>(operationDescription, stepSuccess);
-        }
-
-        private bool BookRoom(DateTime date)
-        {
-            return BookingService.Book(date);
-        }
-        
-        private bool MakePayment(int creditCardNumber, double price)
-        {
-            bool paymentMade = PaymentService.Pay(creditCardNumber, price);
-            if (!paymentMade)
-                Logger.Write(Messages.PaymentFail);
-            return paymentMade;
         }
 
         private string GenerateReservationNumber()

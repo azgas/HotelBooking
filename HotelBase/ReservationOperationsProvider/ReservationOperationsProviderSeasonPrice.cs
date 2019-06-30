@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using HotelBooking.BookingExternalService;
 using HotelBooking.HotelExamples;
 using HotelBooking.Logger;
+using HotelBooking.Operations;
 using HotelBooking.PaymentExternalService;
 
 namespace HotelBooking.ReservationOperationsProvider
 {
-    class ReservationOperationsProviderSeasonPrice : ReservationOperationsProviderCommonFunctions,
-        IReservationOperationsProvider
+    class ReservationOperationsProviderSeasonPrice : IReservationOperationsProvider
     {
         internal readonly IBookingService BookingService;
         internal readonly IPaymentService PaymentService;
         internal readonly ILogger Logger;
-        private const double SeasonPrice = 250;
-        private const double PriceAfterSeason = 200;
         private const string Id = "01";
 
-        public ReservationOperationsProviderSeasonPrice(IBookingService bookingService, 
+        public ReservationOperationsProviderSeasonPrice(IBookingService bookingService,
             IPaymentService paymentService,
             ILogger logger)
         {
@@ -37,21 +35,20 @@ namespace HotelBooking.ReservationOperationsProvider
             switch (operation.Operation)
             {
                 case Operation.BookRoom:
-                    stepSuccess = BookRoom(date);
+                    stepSuccess =
+                        new RoomBookerSeason(date, price, creditCardNumber, email, BookingService, Logger).Execute();
                     operationDescription = OperationDescriptions.Booking;
                     break;
                 case Operation.CheckPrice:
-                    stepSuccess = CheckPrice(price, date);
+                    stepSuccess = new PriceCheckerSeason(date, price, creditCardNumber, email).Execute();
                     operationDescription = OperationDescriptions.PriceValidation;
                     break;
                 case Operation.MakePayment:
-                    stepSuccess = MakePayment(creditCardNumber, price);
+                    stepSuccess = new Payment(date, price, creditCardNumber, email, PaymentService, Logger).Execute();
                     operationDescription = OperationDescriptions.Payment;
                     break;
                 case Operation.SendEmail:
-                    stepSuccess = SendEmail(email);
-                    if (!stepSuccess)
-                        Logger.Write(Messages.InvalidEmail);
+                    stepSuccess = new EmailSender(date, price, creditCardNumber, email, Logger).Execute();
                     operationDescription = OperationDescriptions.Email;
                     break;
                 case Operation.GenerateReservationNumber:
@@ -65,38 +62,6 @@ namespace HotelBooking.ReservationOperationsProvider
             }
 
             return new KeyValuePair<string, bool>(operationDescription, stepSuccess);
-        }
-
-        private bool BookRoom(DateTime date)
-        {
-            if (date < DateTime.Now.AddDays(5))
-            {
-                Logger.Write(Messages.DateTooEarly);
-                return false;
-            }
-
-            bool roomBooked = BookingService.Book(date);
-            if (!roomBooked) return false;
-            Logger.Write(Messages.BookedRoom + Id);
-            return true;
-        }
-
-        protected override bool CheckPrice(double price, DateTime date)
-        {
-            var actualPrice = PriceAfterSeason;
-
-            if (date.Month > 5 && date.Month < 9)
-                actualPrice = SeasonPrice;
-
-            return Math.Abs(price - actualPrice) < 0.01;
-        }
-
-        private bool MakePayment(int creditCardNumber, double price)
-        {
-            bool paymentMade = PaymentService.Pay(creditCardNumber, price);
-            if (!paymentMade)
-                Logger.Write(Messages.PaymentFail);
-            return paymentMade;
         }
 
         private string GenerateReservationNumber()

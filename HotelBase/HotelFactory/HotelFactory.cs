@@ -7,7 +7,7 @@ namespace HotelBooking.HotelFactory
     public class HotelFactory : IHotelFactory
     {
         private readonly Dictionary<int, Type> _hotelTypesDictionary = new Dictionary<int, Type>
-            {{1, typeof(HotelExampleEmailCanFail)}, {2, typeof(HotelExample)}};
+            {{1, typeof(HotelExampleEmailCanFail)}, {2, typeof(HotelExample)}, {3, typeof(HotelExampleBookRoomCantFail)}, {4, typeof(HotelExampleTwoStepsPayment)}};
 
         public IHotel ReturnHotel(int id)
         {
