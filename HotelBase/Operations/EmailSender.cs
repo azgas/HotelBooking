@@ -6,7 +6,7 @@ namespace HotelBooking.Operations
 {
     class EmailSender : OperationBase
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
         public EmailSender(DateTime date, double price, int creditCardNumber, string email, ILogger logger) : base(date, price, creditCardNumber, email)
         {
             _logger = logger;

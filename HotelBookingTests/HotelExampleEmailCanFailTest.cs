@@ -53,9 +53,8 @@ namespace HotelBookingTests
             BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();
             PaymentService.Stub(x => x.Pay(creditCardNumber, price)).Return(true).Repeat.Once();
 
-            //TODO
             ReservationResult result = Service.Reserve(date, price, creditCardNumber, email, _hotel);
-/*            Assert.That(result.ReservationNumber.StartsWith("01"));*/
+            Assert.That(result.OperationsResult.Any(x => x.Key.StartsWith("Generated reservation number: 01")));
         }
 
         [Test]

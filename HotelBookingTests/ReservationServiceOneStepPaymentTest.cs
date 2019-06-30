@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using HotelBooking;
 using HotelBooking.HotelExamples;
 using HotelBooking.ReservationOperationsProvider;
@@ -108,11 +109,11 @@ namespace HotelBookingTests
         [Test]
         public void ShouldCallGenerateReservationNumberMethod()
         {
-            //TODO
-/*
+            Regex reservationNumberRegex = new Regex(@"Generated reservation number: \d");
 
-            ReservationResult result = _service.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmailAddress, operations);
-            Assert.NotNull(result.ReservationNumber);*/
+            ReservationResult result =
+                Service.Reserve(_dummyDate, _dummyPrice, _dummyCreditCardNumber, _dummyEmailAddress, _hotel);
+            Assert.That(result.OperationsResult.Any(x => reservationNumberRegex.IsMatch(x.Key)));
         }
 
         [Test]

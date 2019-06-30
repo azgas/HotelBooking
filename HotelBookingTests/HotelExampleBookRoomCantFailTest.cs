@@ -41,7 +41,7 @@ namespace HotelBookingTests
         public void ShouldReturnSuccessfulReservationResultIfBookRoomSuccess()
         {
             string email = "";
-            DateTime date = default(DateTime);
+            DateTime date = default;
             int creditCardNumber = 1234567;
             double price = double.NaN;
             BookingService.Stub(x => x.Book(date)).Return(true).Repeat.Once();

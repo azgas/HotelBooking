@@ -60,6 +60,8 @@
     <Compile Include="Operations\PaymentAuthorization.cs" />
     <Compile Include="Operations\PriceCheckerSeason.cs" />
     <Compile Include="Operations\PriceChecker.cs" />
+    <Compile Include="Operations\ReservationNumberGenerator.cs" />
+    <Compile Include="Operations\ReservationNumberGeneratorSeason.cs" />
     <Compile Include="Operations\RoomBookerSeason.cs" />
     <Compile Include="Operations\RoomBooker.cs" />
     <Compile Include="PaymentExternalService\IPaymentService.cs" />

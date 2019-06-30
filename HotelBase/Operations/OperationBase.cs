@@ -8,7 +8,6 @@ namespace HotelBooking.Operations
         protected readonly double Price;
         protected readonly int CreditCardNumber;
         protected readonly string Email;
-
         protected OperationBase(DateTime date,
             double price,
             int creditCardNumber,

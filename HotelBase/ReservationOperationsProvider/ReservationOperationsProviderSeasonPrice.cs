@@ -13,7 +13,6 @@ namespace HotelBooking.ReservationOperationsProvider
         internal readonly IBookingService BookingService;
         internal readonly IPaymentService PaymentService;
         internal readonly ILogger Logger;
-        private const string Id = "01";
 
         public ReservationOperationsProviderSeasonPrice(IBookingService bookingService,
             IPaymentService paymentService,
@@ -31,7 +30,7 @@ namespace HotelBooking.ReservationOperationsProvider
             HotelOperation operation)
         {
             bool stepSuccess = false;
-            string operationDescription = "";
+            string operationDescription;
             switch (operation.Operation)
             {
                 case Operation.BookRoom:
@@ -52,8 +51,8 @@ namespace HotelBooking.ReservationOperationsProvider
                     operationDescription = OperationDescriptions.Email;
                     break;
                 case Operation.GenerateReservationNumber:
-                    //TODO
-                    /*reservationNumber = GenerateReservationNumber();*/
+                    stepSuccess = new ReservationNumberGeneratorSeason(date, price, creditCardNumber, email).Execute(out string reservationNumber);
+                    operationDescription = OperationDescriptions.ReservationNumber + reservationNumber;
                     break;
                 default:
                     Logger.Write(Messages.InvalidOperation);
@@ -62,11 +61,6 @@ namespace HotelBooking.ReservationOperationsProvider
             }
 
             return new KeyValuePair<string, bool>(operationDescription, stepSuccess);
-        }
-
-        private string GenerateReservationNumber()
-        {
-            return StringHelper.GenerateRandomString(Id);
         }
     }
 }

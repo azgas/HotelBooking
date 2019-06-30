@@ -30,7 +30,7 @@ namespace HotelBooking.ReservationOperationsProvider
             HotelOperation operation)
         {
             bool stepSuccess = false;
-            string operationDescription = "";
+            string operationDescription;
             switch (operation.Operation)
             {
                 case Operation.BookRoom:
@@ -50,8 +50,8 @@ namespace HotelBooking.ReservationOperationsProvider
                     operationDescription = OperationDescriptions.Email;
                     break;
                 case Operation.GenerateReservationNumber:
-                    //TODO
-/*                    reservationNumber = GenerateReservationNumber();*/
+                    stepSuccess = new ReservationNumberGenerator(date, price, creditCardNumber, email).Execute(out string reservationNumber);
+                    operationDescription = OperationDescriptions.ReservationNumber + reservationNumber;
                     break;
                 default:
                     Logger.Write(Messages.InvalidOperation);
@@ -60,11 +60,6 @@ namespace HotelBooking.ReservationOperationsProvider
             }
 
             return new KeyValuePair<string, bool>(operationDescription, stepSuccess);
-        }
-
-        private string GenerateReservationNumber()
-        {
-            return StringHelper.GenerateRandomString("0");
         }
     }
 }
