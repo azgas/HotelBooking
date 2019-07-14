@@ -6,6 +6,7 @@ using HotelBooking.HotelFactory;
 using HotelBooking.HotelManager;
 using HotelBooking.Logger;
 using HotelBooking.PaymentExternalService;
+using HotelBooking.ReservationOperationsProvider;
 
 namespace Program
 {
@@ -19,7 +20,8 @@ namespace Program
             IPaymentService paymentService = new PaymentService();
             IBookingService bookingService = new BookingService();
             ILogger logger = new ConsoleLogger();
-            _manager = new HotelManager(factory, paymentService, bookingService, logger);
+            ReservationOperationsFactory reservationOperationsFactory = new ReservationOperationsFactory();
+            _manager = new HotelManager(factory, paymentService, bookingService, logger, reservationOperationsFactory);
         }
 
         public string GetAvailableHotelIds()

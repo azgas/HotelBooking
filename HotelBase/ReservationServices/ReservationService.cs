@@ -4,7 +4,7 @@ using System.Linq;
 using HotelBooking.HotelExamples;
 using HotelBooking.ReservationOperationsProvider;
 
-namespace HotelBooking.ReservationService
+namespace HotelBooking.ReservationServices
 {
     public class ReservationService : IReservationService
     {

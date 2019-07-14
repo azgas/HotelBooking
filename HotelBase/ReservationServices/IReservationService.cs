@@ -1,7 +1,7 @@
 ﻿using System;
 using HotelBooking.HotelExamples;
 
-namespace HotelBooking.ReservationService
+namespace HotelBooking.ReservationServices
 {
     public interface IReservationService
     {

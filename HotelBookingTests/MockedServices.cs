@@ -3,7 +3,7 @@ using HotelBooking.HotelFactory;
 using HotelBooking.Logger;
 using HotelBooking.PaymentExternalService;
 using HotelBooking.ReservationOperationsProvider;
-using HotelBooking.ReservationService;
+using HotelBooking.ReservationServices;
 using Rhino.Mocks;
 
 namespace HotelBookingTests

@@ -69,7 +69,7 @@
     <Compile Include="PaymentExternalService\PaymentService.cs" />
     <Compile Include="ReservationOperationsProvider\IReservationOperationsProvider.cs" />
     <Compile Include="PaymentExternalService\KazexPayment.cs" />
-    <Compile Include="ReservationService\IReservationService.cs" />
+    <Compile Include="ReservationServices\IReservationService.cs" />
     <Compile Include="ReservationOperationsProvider\Messages.cs" />
     <Compile Include="ReservationOperationsProvider\OperationDescriptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderSeasonPrice.cs" />
     <Compile Include="ReservationOperationsProvider\ReservationOperationsProviderTwoStepPayment.cs" />
     <Compile Include="ReservationResult.cs" />
-    <Compile Include="ReservationService\ReservationService.cs" />
+    <Compile Include="ReservationServices\ReservationService.cs" />
     <Compile Include="ReservationOperationsProvider\ReservationOperationsFactory.cs" />
     <Compile Include="ReservationOperationsProvider\StringHelper.cs" />
   </ItemGroup>

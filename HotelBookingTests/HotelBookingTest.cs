@@ -4,7 +4,7 @@ using HotelBooking;
 using HotelBooking.HotelExamples;
 using HotelBooking.HotelManager;
 using HotelBooking.ReservationOperationsProvider;
-using HotelBooking.ReservationService;
+using HotelBooking.ReservationServices;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -20,12 +20,13 @@ namespace HotelBookingTests
         {
             OperationsProvider = new ReservationOperationsProviderOneStepPayment(BookingService, PaymentService, Logger);
             Service = new ReservationService(OperationsProvider);
+            ReservationOperationsFactory reservationOperationsFactory = new ReservationOperationsFactory();
             Factory.Stub(f => f.ReturnHotel(1)).Return(new HotelExampleEmailCanFail());
             Factory.Stub(f => f.ReturnHotel(2)).Return(new HotelExample());
             Factory.Stub(f => f.ReturnHotel(3)).Return(null);
             Factory.Stub(f => f.GetHotelIds()).Return(new List<int> {1, 2});
 
-            _manager = new HotelManager(Factory, PaymentService, BookingService, Logger);
+            _manager = new HotelManager(Factory, PaymentService, BookingService, Logger, reservationOperationsFactory);
         }
 
         [Test]

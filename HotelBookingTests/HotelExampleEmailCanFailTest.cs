@@ -3,7 +3,7 @@ using System.Linq;
 using HotelBooking;
 using HotelBooking.HotelExamples;
 using HotelBooking.ReservationOperationsProvider;
-using HotelBooking.ReservationService;
+using HotelBooking.ReservationServices;
 using NUnit.Framework;
 using Rhino.Mocks;
 

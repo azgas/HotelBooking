@@ -6,7 +6,7 @@ using HotelBooking.HotelFactory;
 using HotelBooking.Logger;
 using HotelBooking.PaymentExternalService;
 using HotelBooking.ReservationOperationsProvider;
-using HotelBooking.ReservationService;
+using HotelBooking.ReservationServices;
 
 namespace HotelBooking.HotelManager
 {
@@ -24,13 +24,14 @@ namespace HotelBooking.HotelManager
         public HotelManager(IHotelFactory factory, 
             IPaymentService paymentService, 
             IBookingService bookingService,
-            ILogger logger)
+            ILogger logger,
+            ReservationOperationsFactory operationsFactory)
         {
             _factory = factory;
             _paymentService = paymentService;
             _bookingService = bookingService;
             _logger = logger;
-            _operationsFactory = new ReservationOperationsFactory();
+            _operationsFactory = operationsFactory;
         }
 
         public ReservationResult MakeReservation(int hotelId, double price, int creditCardNumber,
@@ -45,8 +46,7 @@ namespace HotelBooking.HotelManager
             }
 
             IReservationOperationsProvider operationsProvider = _operationsFactory.ReturnService(hotelId, _bookingService, _paymentService, _logger);
-            _reservationService =
-                new ReservationService.ReservationService(operationsProvider);
+            _reservationService = new ReservationService(operationsProvider);
             return _reservationService.Reserve(date, price, creditCardNumber, email, _hotel);
         }
 
