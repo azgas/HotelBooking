@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking", "HotelBooking\HotelBooking.csproj", "{ECB5C4AD-C234-4F73-B2B2-60D6C1D51583}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBookingTests", "HotelBookingTests\HotelBookingTests.csproj", "{97393C0A-8295-4FF0-97C5-96B75CDF60AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBase", "HotelBase\HotelBase.csproj", "{E4D075E2-B9B7-47E6-8DCB-67B7BD1A52DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelBooking", "HotelBase\HotelBooking.csproj", "{E4D075E2-B9B7-47E6-8DCB-67B7BD1A52DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{8DF5AC7F-7BE8-4CF1-818E-DA7404C9C486}"
 EndProject
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ECB5C4AD-C234-4F73-B2B2-60D6C1D51583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECB5C4AD-C234-4F73-B2B2-60D6C1D51583}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ECB5C4AD-C234-4F73-B2B2-60D6C1D51583}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ECB5C4AD-C234-4F73-B2B2-60D6C1D51583}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97393C0A-8295-4FF0-97C5-96B75CDF60AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97393C0A-8295-4FF0-97C5-96B75CDF60AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97393C0A-8295-4FF0-97C5-96B75CDF60AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
