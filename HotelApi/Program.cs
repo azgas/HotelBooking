@@ -5,9 +5,10 @@ namespace HotelApi
 {
     class Program
     {
-        const string Url = "http://localhost:9000";
         static void Main(string[] args)
         {
+            string Url = "http://localhost:9000";
+
             using (WebApp.Start<Startup>(Url))
             {
                 Console.WriteLine("Server started at: " + Url);

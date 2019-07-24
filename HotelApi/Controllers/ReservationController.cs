@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Results;
 using HotelBooking;
-using HotelBooking.BookingExternalService;
-using HotelBooking.HotelFactory;
 using HotelBooking.HotelManager;
-using HotelBooking.Logger;
-using HotelBooking.PaymentExternalService;
 
 namespace HotelApi.Controllers
 {
@@ -15,26 +10,20 @@ namespace HotelApi.Controllers
     {
         private readonly HotelManager _manager;
 
-        public ReservationController()
+        public ReservationController(HotelManager manager)
         {
-            IHotelFactory factory = new HotelFactory();
-            IPaymentService paymentService = new PaymentService();
-            IBookingService bookingService = new BookingService();
-            ILogger logger = new ConsoleLogger();
-            _manager = new HotelManager(factory, paymentService, bookingService, logger);
+            _manager = manager;
         }
 
-        [HttpGet]
         public JsonResult<List<int>> GetAvailableHotelsIds()
         {
             return Json(_manager.PresentAvailableHotels());
         }
 
-        [HttpPost]
-        public JsonResult<ReservationResult> MakeReservation(int hotelId, double price, int creditCardNumber,
-            string email, DateTime date)
+        public JsonResult<ReservationResult> PostReservation([FromBody] ReservationRequest request)
         {
-            return Json(_manager.MakeReservation(hotelId, price, creditCardNumber, email, date));
+            return Json(_manager.MakeReservation(request.HotelId, request.Price, request.CreditCardNumber,
+                request.Email, request.Date));
         }
     }
 }
