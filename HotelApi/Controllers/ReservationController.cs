@@ -20,7 +20,7 @@ namespace HotelApi.Controllers
             return Json(_manager.PresentAvailableHotels());
         }
 
-        public JsonResult<ReservationResult> PostReservation([FromBody] ReservationRequest request)
+        public JsonResult<ReservationResult> PostReservation(ReservationRequest request)
         {
             return Json(_manager.MakeReservation(request.HotelId, request.Price, request.CreditCardNumber,
                 request.Email, request.Date));
